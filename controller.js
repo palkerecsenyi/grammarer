@@ -5,15 +5,26 @@ let cookieParser = require("cookie-parser");
 let MongoClient = require("mongodb");
 let MongoString = process.env.DBSTRING;
 
+function gmConsole(string, colour){
+    console.log(`${colour}${string}\x1b[0m`);
+}
+
 MongoClient.connect(MongoString, function(err,client){
     if(err) throw err;
     var dbo = client.db("grammarer-db");
 
     app.use(cookieParser());
-    app.use(session({secret:"shh!"}));
+    app.use(session({
+        secret:"shh!",
+        resave: false,
+        saveUninitialized: true
+    }));
     app.use(express.static('frontend'));
 
     let port = process.env.PORT || 80;
+
+    gmConsole("\n=====================\nGrammarer Application\n=====================\n", "\x1b[31m");
+    gmConsole("Grammarer is ready - access it at localhost:"+port, "\x1b[33m");
 
     app.get("/", function(req,res){
         res.sendFile(__dirname+"/frontend/index.html");
