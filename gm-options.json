@@ -1,0 +1,12 @@
+{
+  "organisation": {
+    "name": "Example School",
+    "logo": "img/example_school.png"
+  },
+  "rootUrl": "localhost",
+  "ports":{
+    "development": "3000",
+    "production": "80"
+  },
+  ""
+}

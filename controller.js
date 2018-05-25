@@ -5,12 +5,6 @@ var cookieParser = require("cookie-parser");
 var fs = require("fs");
 var MongoClient = require("mongodb");
 
-/*
-  MONGO INFO:
-  Username: admin
-  Password: crIHh9V9greXCzss
-  Shell string (v3.6+): mongo "mongodb+srv://grammarer-slp5s.mongodb.net/grammarer-db" --username admin
-*/
 
 MongoClient.connect("mongodb+srv://admin:crIHh9V9greXCzss@grammarer-slp5s.mongodb.net", function(err,client){
     if(err) throw err;

@@ -48,6 +48,7 @@ g.controller("g-global",function($scope, $http, $rootScope, $location){
                 if(!data.authenticated){
                     $location.path("/");
                 }
+                $rootScope.options = {};
             });
     });
     window.addEventListener("touchstart",function GFirstTouch(){

@@ -24,39 +24,9 @@
 </a>
 </script>
 
-<div ng-controller="g-search" ng-if="tab !== 'none'">
-    <input id="search-input" placeholder="Search everything..." class="input" ng-model="searchQuery" ng-keydown="doSearch()" ng-focus="doSearch()">
-
-    <div style="background-color: #4ECDC4; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px; padding: 10px; margin-top: 10px;" ng-if="searchHits.length>0">
-        <a href="https://www.algolia.com/" style="text-align: center; display:block; margin-top: 20px;" target="_blank">
-            <img src="https://www.algolia.com/static_assets/images/pricing/pricing_new/algolia-powered-by-14773f38.svg" alt="Algolia logo">
-        </a>
-
-        <div class="columns" style="flex-wrap: wrap; margin: 10px -.75rem;">
-            <div ng-repeat="list in searchHits" class="column is-one-quarter">
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            {{list.language}} {{ list.type }} | {{list.name}}
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            <p>Average score: {{list.progress}}</p>
-                        </div>
-                    </div>
-                    <footer class="card-footer">
-                        <a href="#!/{{(list.type==='grammar') ? 'study' : 'study-vocab'}}/{{list.identifier}}" class="card-footer-item">Study!</a>
-                    </footer>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="tabs is-fullwidth" ng-if="tab !== 'none'">
     <ul>
-        <li ng-class="{'is-active': tab == 'grammar'}">
+        <li ng-class="{'is-active': tab == 'grammar'}" ng-if="$rootScope.options.listTypes.includes('grammar')">
             <a href="#!/lists/grammar">Grammar</a>
         </li>
         <li ng-class="{'is-active': tab == 'vocab'}">
