@@ -15,7 +15,7 @@ MongoClient.connect(MongoString, function(err,client){
 
     app.use(cookieParser());
     app.use(session({
-        secret:"shh!",
+        secret:"6(9MCBKU4R9\"n`qkFTjFJWS[Y/",
         resave: false,
         saveUninitialized: true
     }));

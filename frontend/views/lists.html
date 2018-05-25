@@ -8,10 +8,6 @@
     </ul>
 </nav>
 
-<div ng-if="notification.show" class="notification is-{{ notification.colour }}">
-    {{ notification.text }}
-</div>
-
 <script type="text/html" id="hit-template">
 <a href="#!/study/{{identifier}}" class="g-hit-link">
     <div class="g-hit">
@@ -26,13 +22,13 @@
 
 <div class="tabs is-fullwidth" ng-if="tab !== 'none'">
     <ul>
-        <li ng-class="{'is-active': tab == 'grammar'}" ng-if="$rootScope.options.listTypes.includes('grammar')">
+        <li ng-class="{'is-active': tab == 'grammar'}" ng-if="config.features.includes('grammar')">
             <a href="#!/lists/grammar">Grammar</a>
         </li>
-        <li ng-class="{'is-active': tab == 'vocab'}">
+        <li ng-class="{'is-active': tab == 'vocab'}" ng-if="config.features.includes('vocab')">
             <a href="#!/lists/vocab">Vocab</a>
         </li>
-        <li ng-class="{'is-active': tab === 'pdf'}">
+        <li ng-class="{'is-active': tab === 'pdf'}" ng-if="config.features.includes('printables')">
             <a href="#!/lists/pdf">Printables</a>
         </li>
     </ul>
@@ -46,13 +42,13 @@
 
         <div class="field is-grouped" id="g-revise-field">
             <p class="control">
-                <a class="button is-large" href="#!/lists/grammar">Grammar</a>
+                <a class="button is-large" href="#!/lists/grammar" ng-if="config.features.includes('grammar')">Grammar</a>
             </p>
             <p class="control">
-                <a class="button is-large" href="#!/lists/vocab">Vocab</a>
+                <a class="button is-large" href="#!/lists/vocab" ng-if="config.features.includes('vocab')">Vocab</a>
             </p>
             <p class="control">
-                <a class="button is-large" href="#!/lists/pdf">Printables</a>
+                <a class="button is-large" href="#!/lists/pdf" ng-if="config.features.includes('printables')">Printables</a>
             </p>
         </div>
 

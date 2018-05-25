@@ -6,7 +6,7 @@
 
 <div class="column is-4 is-offset-4">
     <figure class="image is-128x128" style="margin: 0 auto 25px;">
-        <img src="/img/icon_800x800.png" alt="Grammarer">
+        <img src="{{orgInfo.logo}}" alt="Grammarer">
     </figure>
     <div class="box">
         <h3 class="title has-text-centered tk-rigid-square">Welcome to Grammarer!</h3>
@@ -21,6 +21,8 @@
         <div class="has-text-centered" style="margin-top:15px">
             <button class="button is-primary is-centered is-medium" style="width: 100%;" ng-click="auth()" id="go">Go!</button>
         </div>
+
+        <p class="subtitle has-text-grey has-text-centered" style="margin-top: 10px;">{{orgInfo.name}}</p>
     </div>
     <p class="has-text-grey has-text-centered">For optimal functionality, don't use Edge or IE.<br>Grammarer works best in Chrome.</p>
     <div style="position: fixed; bottom: 0; right: 0; left: 0; padding: 10px 0; background: white;">

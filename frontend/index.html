@@ -25,12 +25,12 @@
     <title>Grammarer</title>
 
 </head>
-<body ng-app="grammarer" class="is-light" ng-controller="g-global">
+<body ng-app="grammarer" class="is-light" ng-controller="g-global" ng-init="gmConfig()">
 
 <nav class="navbar is-dark">
     <div class="navbar-brand">
         <a class="navbar-item g-brand" href="#!/">
-            <img src="/img/icon_800x800.png" alt="Grammarer icon (800x800)">
+            <img src="{{orgInfo.logo}}" alt="Grammarer icon (800x800)">
         </a>
     </div>
     <div class="navbar-start" ng-if="$root.authed">

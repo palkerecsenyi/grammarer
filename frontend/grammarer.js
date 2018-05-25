@@ -55,6 +55,13 @@ g.controller("g-global",function($scope, $http, $rootScope, $location){
         document.body.classList.add("g-touch");
         window.removeEventListener("touchstart", GFirstTouch, false);
     });
+    $scope.gmConfig = function(){
+        $http.get("/gm-options.json")
+            .then(function(data){
+                $rootScope.config = data.data;
+                $scope.orgInfo = $rootScope.config.organisation;
+            });
+    };
 });
 
 g.controller("g-exit", function($scope, $location, $http, $rootScope){
@@ -72,6 +79,7 @@ g.controller("g-exit", function($scope, $location, $http, $rootScope){
 
 g.controller("g-home", function($scope, $window, $location, $http, $rootScope){
     $scope.problem = false;
+    $scope.orgInfo = $rootScope.config.organisation;
     if($rootScope.authed){
         $location.path("/lists");
     }else{
@@ -104,7 +112,7 @@ g.controller("g-lists",function($location, $scope){
     $scope.tab = "none";
 });
 
-g.controller("g-lists-tab",function($scope,$http,$routeParams,$anchorScroll,$location,$timeout){
+g.controller("g-lists-tab",function($scope,$rootScope,$http,$routeParams,$anchorScroll,$location,$timeout){
 
     /**
      * Returns word with first letter capitalised
@@ -118,11 +126,6 @@ g.controller("g-lists-tab",function($scope,$http,$routeParams,$anchorScroll,$loc
         }else{
             return "Printables";
         }
-    };
-    $scope.notification = {
-        show: true,
-        colour: "success",
-        text: "Grammarer now has a search bar! Type in anything to quickly find a checklist."
     };
     $http.get("/d/lists")
         .then(function(data){
@@ -170,26 +173,25 @@ g.controller("g-lists-tab",function($scope,$http,$routeParams,$anchorScroll,$loc
                 }
             ];
 
-            $scope.languages = {
-                Greek: {
+            $scope.languages = {};
+            for(let i in $rootScope.config.languages){
+                $scope.languages[$scope.FirstCapital($rootScope.config.languages[i])] = {
                     lists: [],
                     vocab: []
-                },
-                Latin: {
-                    lists: [],
-                    vocab: []
-                },
-                German: {
-                    lists: [],
-                    vocab: []
-                },
-            };
+                };
+            }
+
+            $scope.config = $rootScope.config;
 
             for(let x in $scope.lists){
-                $scope.languages[$scope.lists[x].language].lists.push($scope.lists[x]);
+                if($scope.languages[$scope.lists[x].language] !== undefined){
+                    $scope.languages[$scope.lists[x].language].lists.push($scope.lists[x]);
+                }
             }
             for(let x in $scope.vocab){
-                $scope.languages[$scope.vocab[x].language].vocab.push($scope.vocab[x]);
+                if($scope.languages[$scope.vocab[x].language] !== undefined){
+                    $scope.languages[$scope.vocab[x].language].vocab.push($scope.vocab[x]);
+                }
             }
 
             PushScope();
