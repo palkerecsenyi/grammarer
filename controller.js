@@ -1,12 +1,11 @@
-var express = require("express");
-var app = express();
-var session = require('express-session');
-var cookieParser = require("cookie-parser");
-var fs = require("fs");
-var MongoClient = require("mongodb");
+let express = require("express");
+let app = express();
+let session = require('express-session');
+let cookieParser = require("cookie-parser");
+let MongoClient = require("mongodb");
+let MongoString = process.env.DBSTRING;
 
-
-MongoClient.connect("mongodb+srv://admin:crIHh9V9greXCzss@grammarer-slp5s.mongodb.net", function(err,client){
+MongoClient.connect(MongoString, function(err,client){
     if(err) throw err;
     var dbo = client.db("grammarer-db");
 

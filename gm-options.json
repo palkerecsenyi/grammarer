@@ -8,5 +8,25 @@
     "development": "3000",
     "production": "80"
   },
-  ""
+  "dbString": "mongodb+srv://admin:crIHh9V9greXCzss@grammarer-slp5s.mongodb.net",
+  "features": [
+    "grammar",
+    "vocab",
+    "printables"
+  ],
+  "languages": [
+    "greek",
+    "latin",
+    "german"
+  ],
+  "printables": {
+    "directory": "pdf",
+    "files": [
+      "y9_gratin_greek_adj.pdf",
+      "y9_gratin_greek_defart.pdf",
+      "y9_greek_eimi.pdf",
+      "y9_greek_general_verbs.pdf",
+      "y9_greek_noun.pdf"
+    ]
+  }
 }

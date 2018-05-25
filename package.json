@@ -1,15 +1,15 @@
 {
   "name": "grammarer",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "A customisable grammar and vocab learning platform for schools",
   "main": "controller.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --timeout 5000",
-    "start": "node controller.js",
-    "start-dev": "set PORT=3000&&node controller.js"
+    "start": "set PORT=80&&set DBSTRING=mongodb+srv://admin:crIHh9V9greXCzss@grammarer-slp5s.mongodb.net&&node controller.js",
+    "start-dev": "set PORT=3000&&set DBSTRING=mongodb+srv://admin:crIHh9V9greXCzss@grammarer-slp5s.mongodb.net&&node controller.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Pal Kerecsenyi",
+  "license": "MIT",
   "dependencies": {
     "chai": "^4.1.2",
     "chai-json-equal": "0.0.1",
