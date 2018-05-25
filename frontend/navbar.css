@@ -1,0 +1,28 @@
+.navbar{
+    background-color: #FF6B6B !important;
+    color: white !important;
+    min-height: 3.25rem;
+}
+.navbar-item{
+    color:white !important;
+    background-color: #FF6B6B !important;
+    display: flex;
+    align-items: center;
+}
+.navbar-item:not(.g-brand):hover{
+    background-color: #ff4545 !important;
+    color:white !important;
+}
+.navbar, .navbar-start{
+    display: flex;
+    align-items: stretch;
+}
+.navbar-start{
+    justify-content: flex-start;
+    margin-right: auto;
+}
+@media only screen and (max-width: 425px){
+    .navbar{
+        min-height: 3.50rem;
+    }
+}

@@ -1,0 +1,110 @@
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="#!/">Home</a></li>
+        <li class="is-active"><a href="#!/about">About</a></li>
+    </ul>
+</nav>
+
+<p class="title is-3 tk-rigid-square">About Grammarer</p>
+<p>We've all used flashcard tools like <a href="https://quizlet.com/en-gb">Quizlet</a> or <a href="https://www.studyblue.com/">StudyBlue</a> to revise vocab for Greek, Latin and other languages. They are perfect for helping us effectively learn words as well as making the process enjoyable. However, it's not possible to efficiently learn grammar with them. That's why I (Pal Kerecsenyi) made <span class="tk-rigid-square" style="font-weight: bolder">Grammarer</span>.</p>
+<p>Users receive a simple 4-digit code on a piece of paper with which they can access the system and track their progress. They can select a grammar list, look at the table, press 'Go!' and test themselves.</p>
+
+<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px">How to use</p>
+<p>Once you've signed in with your 4-digit access code, find a grammar list that you want to revise. Click 'Study' in the relevant box, and memorise the table that appears. Once you've done so, press the 'Go!' button below the table. The endings will disappear and a blue square will highlight your position. Once you think you know the ending shown by this highlighter, press <strong>space</strong> to reveal the answer. If you got it right, press the <strong>right arrow</strong> or if you got it wrong, press the <strong>left arrow</strong>. The box will be highlighted green or red (depending on whether you got it right or wrong) and the highlighter will move to the next box. For some grammar lists (like the Greek definite article), the highlighter will move sideways but most of the time it will move downwards.</p>
+<p style="margin: 10px 0 0;">Once you've completed the grammar list, the Results box will appear. This shows how many endings you got right, and how many wrong. <strong>Click 'Save!' to finish studying the list.</strong> If you don't do this, you'll lose your score for that session.</p>
+
+<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px;">How it works</p>
+<div class="notification is-warning">
+    This section explains the technological functionality of this website. Don't bother reading it if you're not interested.
+</div>
+<p>Grammarer is hosted with <a href="https://www.heroku.com/">Heroku</a>, a freemium container-based hosting system that's based on Git pushes. Everytime you push code, it rebuilds and deploys (zero downtime). You don't get access to the OS, it's just a hosting system for code. It works with any language. It gives you a subdomain (e.g. 'grammarer.herokuapp.com') and an SSL certificate.</p>
+<p style="margin: 10px 0 0;">Grammarer's backend works with NodeJS and Express, like most simple websites. It stores Lists, Users and Results using MongoDB. This is hosted using <a href="https://www.mongodb.com/cloud/atlas">MongoDB Atlas</a> (Mongo-as-a-service freemium DB hosting using AWS). In the frontend, it uses AngularJS and a heavily customised version of <a href="https://bulma.io/">Bulma.CSS</a>. The actual table navigation and marking system is written entirely by me (😄). Surprisingly enough, Greek characters work perfectly without any special accomodation. All authentication happens on the backend, so you can't hijack another account by changing a variable. No data besides the code is stored about users. Nice and simple.</p>
+
+<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px;">Feedback</p>
+<p>If you've found an issue with Grammarer, you want me to add another checklist, you've lost your code or you want to tell me how amazing Grammarer is (I already know!), feel free to email me at <a href="mailto:palkerecs@gmail.com">palkerecs@gmail.com</a>.</p>
+
+<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px;">Copyright and attribution</p>
+<p>This website is created and operated by Pal Kerecsenyi. All rights are reserved. Copyright © 2018 Pal Kerecsenyi.</p>
+<p>Grammarer uses:</p>
+<div class="content">
+    <ul>
+        <li>
+            <p>AngularJS (+route and animate) v1.6.9</p>
+        </li>
+        <li>
+            <p>AngularJS <a href="http://chieffancypants.github.io/angular-loading-bar/">Loading Bar</a> v0.9.0</p>
+        </li>
+        <li>
+            <p>jQuery v3.3.1</p>
+        </li>
+        <li>
+            <p><a href="https://bulma.io/">Bulma.CSS</a> v0.7.1</p>
+        </li>
+        <li>
+            <p>Font: <span class="tk-rigid-square" style="font-weight: bold">Rigid Square</span> from Adobe Typekit.</p>
+        </li>
+    </ul>
+</div>
+<p style="margin:15px 0 5px;">You can also find me on <a href="https://github.com/palkerecsenyi">GitHub</a>.</p>
+
+<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px;">Your privacy</p>
+<p>Grammarer is made to be as simple as possible and to avoid data protection complications, we store as little data as possible.</p>
+
+<div style="width: 100%; overflow: auto;">
+    <table class="table is-bordered is-striped" style="margin-top: 10px;">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Given by</th>
+            <th>Purpose</th>
+            <th>Shared with</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Code</td>
+            <td>Admin or your teacher</td>
+            <td>Used for signing you in and storing your results</td>
+            <td>You, the admin (Pal Kerecsenyi) and your teacher (if assigned by teacher)</td>
+        </tr>
+        <tr>
+            <td>Deploy code</td>
+            <td>Admin or your teacher</td>
+            <td>Used to identify what batch your code came from (usually one deploy is assigned to an A4 sheet of codes, 16)</td>
+            <td>You (written on the back of your card), the admin and your teacher (if assigned by teacher)</td>
+        </tr>
+        <tr>
+            <td>Last access date/time</td>
+            <td>Automatically on your visit</td>
+            <td>Used to identify codes that aren't being used and could be deleted to save database space and maintain clarity</td>
+            <td>The admin (through <abbr title="Manually looking at the database for debugging purposes">DB access</abbr>) and no-one else</td>
+        </tr>
+        <tr>
+            <td>Your results for Lists</td>
+            <td>Automatically when you <strong>save</strong> results</td>
+            <td>Used to report your progress to you, make nice graphs and calculate averages</td>
+            <td>The admin (through <abbr title="Manually looking at the database for debugging purposes">DB access</abbr>), you - never with your teacher.</td>
+        </tr>
+        <tr>
+            <td>Prefix code</td>
+            <td>Admin - given to teacher accounts to uniquely identify. This is a two-character string (e.g. 'hq').</td>
+            <td>Used to identify teachers and their assigned students. Student codes begin with this prefix if they are assigned by the respective teacher.</td>
+            <td>Same as your code</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px;">Helping me</p>
+<p>If you want to add a grammar list to Grammarer, I'd appreciate your help a lot. Lists are made with JSON objects, in a specific format. This object is then uploaded to MongoDB and it gets seamlessly integrated into the user experience. Here is an example object - this defines declension 1 nouns in Latin: <a href="https://gist.github.com/palkerecsenyi/2ef89685392e511da1ba9484fce689a6">Gist</a></p>
+
+
+
+<p>It starts with a 'title', which is displayed across the site, usually along with the 'language'. The 'identifier' is a machine-only descriptor for the list. In this case, 'l' means 'Latin' and 'nouns_1' means '1st declension nouns'. The 'results' field must be an empty array - user results will be saved here.</p>
+<p style="margin: 10px 0 0;">The 'maxPosition' field describes the final cell in the list. The first number refers to the amount of columns, and the second to the amount of rows. Neither of these numbers can be greater than 9, for reasons that will soon become apparent. All numbers count from 1, not 0.</p>
+<p style="margin: 10px 0 0;">Next, the 'table' object describes the table itself. It has two root-level arrays - 'head' and 'body'. The 'head' section is an array of strings to be placed in order of definition in the head of the table. These are static names and are not used in the quiz itself. The'body' array contains several objects, each representing an individual row. The 'first' field is the bold, non-tested item at the start of each row, e.g. 'Nominative'. The 'cells' array contains several objects, each with two items. The 'name' is the actual content to be displayed. This can contain Greek characters and macron Latin characters without any special configuration. The 'id' field contains two numbers, which may seem connected but are actually not. This number will be applied as the DOM id of the cell in question. The first number is the column number (starting from 1). This cannot be greater than 9 (as the second number will then be 0) and cannot be greater than maxPosition[0]. The second number is the row number, which can also not be greater than 9 or maxPosition[1].</p>
+<p style="margin: 10px 0 0;">For more examples, visit 'https://grammarer.herokuapp.com/d/listdata?list=XXX', replacing XXX with the identifier of the list you'd like to see. This will return a minified JSON object representing the list, excluding result data.</p>
+<p style="margin: 10px 0 0;">Once you've made an object, you can email it to me and I will add it after review. You can use <a href="http://greek.typeit.org/">TypeIt</a> for typing Greek characters and you can use a Maori (NZ) keyboard for Latin macrons - press ` + a vowel in Windows.</p>
+
+<br>

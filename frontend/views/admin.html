@@ -1,0 +1,62 @@
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="#!/">Home</a></li>
+        <li class="is-active"><a href="#!/admin">Magic Dashboard</a></li>
+    </ul>
+</nav>
+
+<p class="title is-3 tk-rigid-square">Magic Dashboard</p>
+
+<p>This page enables administrators and teachers to add codes to Grammarer. Every teacher has a 'prefix' - a two letter code that is added on to the start of every code they create in order to identify the code as belonging to the teacher. To add a code, simply fill in the form.</p>
+<p>The 'Code' field takes a 4-digit number (not including the teacher prefix) and the 'Deploy' field takes a single string to identify the batch in which the code was deployed. The 'Code' has to be a unique number - press CTRL + F to find existing codes and make sure you're not overwriting one.</p>
+<br/>
+<p>Super admins, use <a href="https://www.humongous.io/app" target="_blank">this</a> instead.</p>
+
+<hr/>
+
+<div class="columns">
+    <div class="column">
+        <p class="subtitle is-4" style="margin-bottom: 5px;">Currently registered codes</p>
+        <p>Showing codes starting with <strong>{{prefix}}</strong></p>
+        <div class="g-table-container">
+            <table class="table" style="width: 100%;" id="aTable">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Deploy</th>
+                    <th>Card?</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data">
+                    <td><strong>{{item.code}}</strong></td>
+                    <td>{{item.deploy}}</td>
+                    <td>{{item.card ? "Yes" : "No"}}</td>
+                    <td><a href ng-click="aDelete($event, item.code)" class="button is-danger">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="column">
+        <p class="subtitle is-4">Add new code</p>
+        <div class="control">
+            <div class="field">
+                <input type="number" max="9999" ng-model="newcode" placeholder="Code (excluding prefix)..." class="input is-medium" style="margin-bottom: 10px;">
+                <input type="text" ng-model="newdeploy" placeholder="Deploy..." class="input is-medium" style="margin-bottom: 10px;">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="newcard">
+                    Deployed with card
+                </label>
+            </div>
+        </div>
+        <button class="button is-medium is-primary" ng-click="addCode()" style="margin-top: 10px;" id="addbutton">Add code</button>
+
+        <hr/>
+
+        <p class="subtitle is-4">Auto-generate PDF</p>
+        <input type="text" ng-model="pdfDeploy" placeholder="Deploy..." class="input is-medium" style="margin-bottom: 10px;">
+        <button class="button is-medium is-primary" ng-click="pdf($event)">Sheet of 16 codes</button>
+    </div>
+</div>

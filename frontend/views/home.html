@@ -1,0 +1,29 @@
+<nav class="breadcrumb">
+    <ul>
+        <li class="is-active"><a href="#!/">Home</a></li>
+    </ul>
+</nav>
+
+<div class="column is-4 is-offset-4">
+    <figure class="image is-128x128" style="margin: 0 auto 25px;">
+        <img src="/img/icon_800x800.png" alt="Grammarer">
+    </figure>
+    <div class="box">
+        <h3 class="title has-text-centered tk-rigid-square">Welcome to Grammarer!</h3>
+        <p class="subtitle has-text-grey has-text-centered">Enter your access code to continue</p>
+    
+        <div class="notification is-danger" ng-if="problem">
+            {{message}}
+        </div>
+    
+        <input class="input is-large" type="text" placeholder="Code..." ng-model="code" maxlength="7" style="text-align: center;">
+    
+        <div class="has-text-centered" style="margin-top:15px">
+            <button class="button is-primary is-centered is-medium" style="width: 100%;" ng-click="auth()" id="go">Go!</button>
+        </div>
+    </div>
+    <p class="has-text-grey has-text-centered">For optimal functionality, don't use Edge or IE.<br>Grammarer works best in Chrome.</p>
+    <div style="position: fixed; bottom: 0; right: 0; left: 0; padding: 10px 0; background: white;">
+        <p class="has-text-grey" style="text-align: center;">Copyright © 2018 Pal Kerecsenyi.</p>
+    </div>
+</div>

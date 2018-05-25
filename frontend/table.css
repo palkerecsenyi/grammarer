@@ -1,0 +1,45 @@
+#table, #table th, #table td{
+    border:1px solid lightgrey;
+}
+#table{
+    width: 100%;
+    border-collapse: collapse;
+}
+#table th{
+    padding:15px;
+}
+#table td{
+    padding: 5px 15px;
+}
+#table tbody tr td:first-child{
+    font-weight: bold;
+}
+.clear{
+    color:white;
+    pointer-events: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+#table td.selected{
+    background-color: lightblue;
+    color:lightblue;
+}
+#table td.revealed{
+    color: darkred;
+}
+#table td.right{
+    background-color:lightgreen;
+}
+#table td.wrong{
+    background-color:lightcoral;
+}
+#table.g-table-vocab td{
+    font-size: 1.75rem;
+    font-weight: normal !important;
+}
+#table.g-table-vocab td:first-child{
+    font-weight: 550 !important;
+}
+#table .g-content{
+    font-size: 1.75rem;
+}

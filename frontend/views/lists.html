@@ -1,0 +1,165 @@
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="#!/">Home</a></li>
+        <li ng-class="{'is-active': tab === 'none'}"><a href="#!/lists">Lists</a></li>
+        <li class="is-active" ng-if="tab !== 'none'">
+            <a href> {{ nameOfTab }} </a>
+        </li>
+    </ul>
+</nav>
+
+<div ng-if="notification.show" class="notification is-{{ notification.colour }}">
+    {{ notification.text }}
+</div>
+
+<script type="text/html" id="hit-template">
+<a href="#!/study/{{identifier}}" class="g-hit-link">
+    <div class="g-hit">
+        <div class="content">
+            <p class="language">{{language}}</p>
+            <p class="name">{{name}}</p>
+            <p class="progress">{{progress}}</p>
+        </div>
+    </div>
+</a>
+</script>
+
+<div ng-controller="g-search" ng-if="tab !== 'none'">
+    <input id="search-input" placeholder="Search everything..." class="input" ng-model="searchQuery" ng-keydown="doSearch()" ng-focus="doSearch()">
+
+    <div style="background-color: #4ECDC4; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px; padding: 10px; margin-top: 10px;" ng-if="searchHits.length>0">
+        <a href="https://www.algolia.com/" style="text-align: center; display:block; margin-top: 20px;" target="_blank">
+            <img src="https://www.algolia.com/static_assets/images/pricing/pricing_new/algolia-powered-by-14773f38.svg" alt="Algolia logo">
+        </a>
+
+        <div class="columns" style="flex-wrap: wrap; margin: 10px -.75rem;">
+            <div ng-repeat="list in searchHits" class="column is-one-quarter">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            {{list.language}} {{ list.type }} | {{list.name}}
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            <p>Average score: {{list.progress}}</p>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="#!/{{(list.type==='grammar') ? 'study' : 'study-vocab'}}/{{list.identifier}}" class="card-footer-item">Study!</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tabs is-fullwidth" ng-if="tab !== 'none'">
+    <ul>
+        <li ng-class="{'is-active': tab == 'grammar'}">
+            <a href="#!/lists/grammar">Grammar</a>
+        </li>
+        <li ng-class="{'is-active': tab == 'vocab'}">
+            <a href="#!/lists/vocab">Vocab</a>
+        </li>
+        <li ng-class="{'is-active': tab === 'pdf'}">
+            <a href="#!/lists/pdf">Printables</a>
+        </li>
+    </ul>
+</div>
+
+<div id="g-tab-switcher">
+
+    <div ng-if="tab === 'none'" class="has-text-centered">
+        <p class="title is-2 tk-rigid-square">Welcome to Grammarer!</p>
+        <p class="subtitle is-4" style="margin-bottom:5px;">What do you want to revise today?</p>
+
+        <div class="field is-grouped" id="g-revise-field">
+            <p class="control">
+                <a class="button is-large" href="#!/lists/grammar">Grammar</a>
+            </p>
+            <p class="control">
+                <a class="button is-large" href="#!/lists/vocab">Vocab</a>
+            </p>
+            <p class="control">
+                <a class="button is-large" href="#!/lists/pdf">Printables</a>
+            </p>
+        </div>
+
+        <p><a href="#!/admin">Magic Dashboard</a> for teachers and administrators</p>
+
+    </div>
+
+    <div ng-if="tab === 'grammar'">
+        <div ng-repeat="lists in languages">
+            <p class="title is-4 has-text-centered" style="margin: 20px 0;" id="g-{{ lists.lists[0].language }}">{{ lists.lists[0].language }}</p>
+            <div class="columns" style="flex-wrap: wrap;">
+                <div class="column is-one-quarter" ng-repeat="list in lists.lists">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                {{list.title}}
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <p>Average score: {{list.progress}}%</p>
+                            </div>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="#!/study/{{list.identifier}}" class="card-footer-item">Study!</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="tab === 'vocab'">
+        <div ng-repeat="lists in languages">
+            <p class="title is-4 has-text-centered" style="margin: 20px 0;" id="g-{{ lists.vocab[0].language }}">{{ lists.vocab[0].language }}</p>
+            <div class="columns" style="flex-wrap: wrap;">
+                <div class="column is-one-quarter" ng-repeat="list in lists.vocab">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">{{ list.language }} | Checklist {{ list.number }}</p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <p>Average score: {{ list.progress }}%</p>
+                            </div>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="#!/study-vocab/{{list.identifier}}" class="card-footer-item">Study!</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="tab === 'pdf'">
+
+        <p>The following PDF files were created by <strong>Theodore Tucker</strong> (thanks 😊). They are intended to be used during computer-free study periods, and can easily be printed out.</p>
+
+        <div class="columns" style="flex-wrap: wrap;margin-top: 10px;">
+            <div class="column is-one-quarter" ng-repeat="pdf in pdfs">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">{{ pdf.language }} | {{ pdf.name }}</p>
+                    </header>
+                    <div class="card-content">
+                        <p class="has-text-grey">{{ pdf.fileName }}</p>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="/pdf/{{ pdf.fileName }}" target="_blank" class="card-footer-item">Open!</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<br>

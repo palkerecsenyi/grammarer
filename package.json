@@ -1,0 +1,24 @@
+{
+  "name": "grammarer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "controller.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec --timeout 5000",
+    "start": "node controller.js",
+    "start-dev": "set PORT=3000&&node controller.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "chai-json-equal": "0.0.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "mocha": "^5.1.1",
+    "mongodb": "^3.0.7",
+    "request": "^2.85.0"
+  },
+  "devDependencies": {}
+}

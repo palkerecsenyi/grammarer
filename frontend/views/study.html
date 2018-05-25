@@ -1,0 +1,98 @@
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="#!/">Home</a></li>
+        <li><a href="#!/lists">Lists</a></li>
+        <li><a href="#!/lists{{ (listType==='grammar') ? '/grammar' : '/vocab' }}?lang={{language}}">{{ (listType==='grammar') ? 'Grammar' : 'Vocab' }}</a></li>
+        <li class="is-active"><a href>Study <strong style="margin-left:4px">{{displayInfo}}</strong></a></li>
+    </ul>
+</nav>
+
+<div class="box" id="g-action-box">
+    <div class="field is-grouped" style="width: 100%; overflow-x: auto; overflow-y: hidden; align-items: center;">
+        <div class="control">
+            <p class="title is-4 tk-rigid-square">{{displayInfo}}</p>
+        </div>
+        <div class="control g-function-button">
+            <button class="button is-warning" ng-click="clear()" id="clear">Clear progress</button>
+        </div>
+        <div class="control g-function-button" ng-if="listType === 'vocab'">
+            <button class="button is-primary" ng-click="swap()" id="swap">Swap languages</button>
+        </div>
+        <div class="control g-function-button" ng-if="listType === 'vocab'">
+            <p class="has-text-grey">Your score will always be counted as the same, no matter the order of languages.</p>
+        </div>
+    </div>
+
+    <div class="g-table-container" id="g-table-container" style="position: relative;max-height: 75vh;">
+        <div id="g-scroll-overlay" style="width: 100%;height: 100%;background-color: lightgray;opacity: 0.9;position: absolute;display: none;">
+            <div style="left: 0; right: 0;text-align:center;position: absolute;display: block;top:20%;padding: 0 15%;">
+                <p class="subtitle is-3" >Scroll →/↓</p>
+                <p>...if the table doesn't fit on your screen. Use the buttons to navigate or the keyboard on a computer.</p>
+                <p><a href ng-click="dismissScroll()">Dismiss</a></p>
+            </div>
+        </div>
+        
+        <table id="table" ng-class="{'g-table-vocab': listType==='vocab'}">
+            <thead>
+                <tr>
+                    <th ng-repeat="cell in table.head" ng-if="listType === 'grammar'">{{cell}}</th>
+                    <th ng-if="listType === 'vocab'">Original</th>
+                    <th ng-if="listType === 'vocab'">Translation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in table.rows" ng-if="listType === 'grammar'">
+                    <td>{{row.first}}</td>
+                    <td class="g-content" ng-repeat="cell in row.cells" id="{{cell.id}}">{{cell.name}}</td>
+                </tr>
+                <tr ng-repeat="row in table" ng-if="listType === 'vocab'">
+                    <td>{{ row.original }}</td>
+                    <td class="g-content" id="{{ $index }}">{{ row.english }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+    <div class="has-text-centered" id="g-maybe-bar">
+        <button class="button is-primary is-medium" ng-click="begin()" ng-hide="learning" style="margin-top:10px;" id="g-go">Go! [space]</button>
+        <div class="field has-addons" ng-hide="learning==false" style="justify-content: center; margin-top:10px;" id="m-controlbox">
+            <p class="control">
+                <button class="button is-danger g-mark" ng-click="mWrong()">Wrong [←]</button>
+            </p>
+            <p class="control">
+                <button class="button is-primary g-reveal" ng-click="mReveal()">Reveal [space]</button>
+            </p>
+            <p class="control">
+                <button class="button is-success g-mark" ng-click="mRight()">Right [→]</button>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="box" id="results-box" ng-controller="g-study-results">
+    <h3 class="title is-3 tk-rigid-square">Results</h3>
+    <div class="columns">
+        <div class="column">
+            <p class="title is-2" id="correct"></p>
+            <p class="subtitle is-4">Correct</p>
+        </div>
+        <div class="column">
+            <p class="title is-2" id="incorrect"></p>
+            <p class="subtitle is-4">Incorrect</p>
+        </div>
+        <div class="column">
+            <p class="title is-2" id="percent"></p>
+            <p class="subtitle is-4">Percent</p>
+        </div>
+    </div>
+
+    <button class="button is-primary is-large" ng-click="save()" id="save">Save!</button>
+
+    <p class="title is-4 tk-rigid-square" style="margin-top:10px;">Historic results</p>
+    <button class="button is-primary" ng-click="showChart()" ng-hide="chartShown">Show chart</button>
+
+    <div google-chart chart="ghresults" ng-show="chartShown" style="height:350px;width:100%"></div>
+</div>
+
+<br/>

@@ -1,0 +1,20 @@
+@media only screen and (max-width:1087px){
+    .container{
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}
+
+.g-table-container{
+    overflow: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#g-revise-field{
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#g-revise-field .control{
+    margin-top:10px;
+}
