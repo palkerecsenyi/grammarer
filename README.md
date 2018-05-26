@@ -1,6 +1,9 @@
+<center>
 <img src="https://image.ibb.co/e1jeGT/icon_800x800.png" width="80" style="margin-bottom:-10px">
+<h1>Grammarer</h1>
+</center>
 
-# Grammarer
+
 A grammar and vocab learning platform for schools.
 
 ![Grammarer screenshot](https://image.ibb.co/kzWOAo/frame_chrome_mac.png)
