@@ -144,8 +144,8 @@ Next, you need to define the `maxPosition` array. This contains two integers, de
 
 | Direction | Integers                                            |
 |-----------|-----------------------------------------------------|
-| Left      | First = Amount of rows | Second = Amount of columns |
-| Down      | First = Amount of columns | Second = Amount of rows |
+| Left      | 0 = Amount of rows :: 1 = Amount of columns |
+| Down      | 0 = Amount of columns :: 1 = Amount of rows |
 
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
