@@ -1,6 +1,9 @@
 <p align="center">
+
 <img src="https://image.ibb.co/e1jeGT/icon_800x800.png" width="80" style="margin-bottom:-10px">
-<h1>Grammarer</h1>
+
+<h1 align="center">Grammarer</h1>
+
 </p>
 
 
