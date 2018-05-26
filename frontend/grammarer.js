@@ -145,33 +145,7 @@ g.controller("g-lists-tab",function($scope,$rootScope,$http,$routeParams,$anchor
                 }
             }
 
-            $scope.pdfs = [
-                {
-                    language: "Greek",
-                    name: "Adjectives",
-                    fileName: "y9_gratin_greek_adj.pdf"
-                },
-                {
-                    language: "Greek",
-                    name: "Definite Article",
-                    fileName: "y9_gratin_greek_defart.pdf"
-                },
-                {
-                    language: "Greek",
-                    name: "είμι",
-                    fileName: "y9_gratin_greek_eimi.pdf"
-                },
-                {
-                    language: "Greek",
-                    name: "Verbs",
-                    fileName: "y9_gratin_greek_general_verbs.pdf"
-                },
-                {
-                    language: "Greek",
-                    name: "Nouns",
-                    fileName: "y9_gratin_greek_noun.pdf"
-                }
-            ];
+            $scope.pdfs = $rootScope.config.printables;
 
             $scope.languages = {};
             for(let i in $rootScope.config.languages){

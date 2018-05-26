@@ -13,19 +13,23 @@
   },
   "dbString": "mongodb://localhost:27017",
   "features": [
-    "grammar"
+    "grammar",
+    "vocab",
+    "printables"
   ],
   "languages": [
     "greek"
   ],
-  "printables": {
-    "directory": "pdf",
-    "files": [
-      "y9_gratin_greek_adj.pdf",
-      "y9_gratin_greek_defart.pdf",
-      "y9_greek_eimi.pdf",
-      "y9_greek_general_verbs.pdf",
-      "y9_greek_noun.pdf"
-    ]
-  }
+  "printables": [
+    {
+      "language": "Greek",
+      "name": "Adjectives",
+      "fileName": "y9_gratin_greek_adj.pdf"
+    },
+    {
+      "language": "Greek",
+      "name": "Definite Article",
+      "fileName": "y9_gratin_greek_defart.pdf"
+    }
+  ]
 }
