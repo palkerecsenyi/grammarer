@@ -100,6 +100,26 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 
 3. That's it! Visit the URL it shows in a web browser and sign in with the **default code 'admin'**. You can then access the 'Magic Dashboard' to create new users.
 
+# Further customisation
+You can choose to customise Grammarer using the `gm-options.json` file. The `organisation` object contains most customisation options:
+
+| Name            | Type    | Description                                                                                                                           |
+|-----------------|---------|---------------------------------------------------------------------------------------------------------------------------------------|
+| name            | string  | The name of your organisation                                                                                                         |
+| logo            | string  | The logo of your organisation, relative the the `frontend` directory                                                                  |
+| primaryColour   | string  | The HEX colour code for the main colour of your organisation                                                                          |
+| secondaryColour | string  | The HEX colour code for the secondary colour of your organisation - this is usually just the colour 30% darker than `primaryColour`.  |
+| aboutPage       | boolean | Whether a descriptive page that introduces the Grammarer project should be shown - file can be changed in `frontend/views/about.html` |
+
+However, these options may not be sufficient for you. In this case, you can start by editing the four CSS files in `frontend`:
+
+| `loader.css` | Special markup to customise the centered loader spinner - see [this](https://github.com/chieffancypants/angular-loading-bar)             |
+| `mobile.css` | A tiny set of mobile-adapting customisations - not a lot to change here                                                                  |
+| `navbar.css` | Defines colours and styles for the Bulma navbar - colours are auto-set by setup.js                                                       |
+| `table.css`  | Defines the table used for the actual grammar and vocab tables - selected, revealed, right and wrong are all state classes set by jQuery |
+
+On top of this, you can also change the HTML files in `frontend/views` or the main view container in `frontend/index.html`. Satisfied now?
+
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
 
