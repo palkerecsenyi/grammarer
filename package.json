@@ -6,8 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --timeout 5000",
     "start": "set PORT=80&&set DBSTRING=mongodb://localhost:27017&&node controller.js",
-    "start-dev": "set PORT=3000&&set DBSTRING=mongodb://localhost:27017&&node controller.js",
-    "start-travis": "nodemon controller.js"
+    "start-dev": "set PORT=3000&&set DBSTRING=mongodb://localhost:27017&&node controller.js"
   },
   "author": "Pal Kerecsenyi",
   "license": "MIT",
