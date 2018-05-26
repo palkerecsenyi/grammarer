@@ -147,6 +147,8 @@ Next, you need to define the `maxPosition` array. This contains two integers, de
 | Left      | 0 = Amount of rows :: 1 = Amount of columns |
 | Down      | 0 = Amount of columns :: 1 = Amount of rows |
 
+#### This section is incomplete. More content will be added soon. Sorry for the inconvenience caused.
+
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
 
