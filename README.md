@@ -16,4 +16,4 @@ Students will love Grammarer - it offers a **fun and super-simple solution** to 
 
 Grammarer is **fully customisable**. Every colour. Every icon. Every title. Everything can be changed using the `gm-options.json` file.
 
-###
+![Grammarer gif](https://image.ibb.co/iXUobT/capture.gif)
