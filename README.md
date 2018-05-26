@@ -122,6 +122,24 @@ However, these options may not be sufficient for you. In this case, you can star
 
 On top of this, you can also change the HTML files in `frontend/views` or the main view container in `frontend/index.html`. Satisfied now?
 
+# Adding grammar/vocab lists
+All lists are defined in the `lists` collection within the `grammarer-db` database. If this doesn't exist (it isn't created by default), you will need to add it manually. It's easiest to do this through [Mongo Compass](https://www.mongodb.com/products/compass), a desktop MongoDB client. You will also need the MongoDB CLI to insert large JSON objects in their original format.
+
+Grammar and vocab lists have slightly different structures so they are explained separately.
+
+### Grammar
+You can see an example [here](https://gist.github.com/palkerecsenyi/8001e12754b29c6ab295a1aa4017b707).
+
+The object starts with some global definitions to identify the list:
+
+| Name         | Type   | Content                                                                                                                                                                           |
+|--------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `title`      | string | A human-readable name to describe the list                                                                                                                                        |
+| `language`   | string | The language of the list, starting with **a capital letter**. This must be registered in the `languages` array in `gm-options.json` but with a **lowercase letter** in that case. |
+| `identifier` | string | A machine-readable unique identifier (unique across **the whole database**)                                                                                                       |
+| `results`    | array  | Must be an empty array, but must be defined. Results will get placed in here automatically.                                                                                       |
+| `type`       | string | In this case, this will be `grammar` but it can also be `vocab`                                                                                                                   |
+
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
 
