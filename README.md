@@ -140,6 +140,13 @@ The object starts with some global definitions to identify the list:
 | `results`    | array  | Must be an empty array, but must be defined. Results will get placed in here automatically.                                                                                       |
 | `type`       | string | In this case, this will be `grammar` but it can also be `vocab`                                                                                                                   |
 
+Next, you need to define the `maxPosition` array. This contains two integers, depending on which way you want the cursor to move through the list when it is practised:
+
+| Direction | Integers                                            |
+|-----------|-----------------------------------------------------|
+| Left      | First = Amount of rows | Second = Amount of columns |
+| Down      | First = Amount of columns | Second = Amount of rows |
+
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
 
