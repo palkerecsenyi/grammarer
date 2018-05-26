@@ -39,4 +39,40 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 
 4. Enter the directory that the files were cloned into, and edit `gm-options.json` with your favourite text editor. Here is what it should look like:
 
-![JSON example](https://image.ibb.co/hPY0O8/carbon_1.png)
+```json
+{
+  "organisation": {
+    "name": "Example School",
+    "logo": "img/example_school.png",
+    "primaryColour": "#5fe85a",
+    "secondaryColour": "#4fbc4b",
+    "aboutPage": true
+  },
+  "rootUrl": "localhost",
+  "ports":{
+    "development": "3000",
+    "production": "80"
+  },
+  "dbString": "mongodb://localhost:27017",
+  "features": [
+    "grammar",
+    "vocab",
+    "printables"
+  ],
+  "languages": [
+    "greek"
+  ],
+  "printables": [
+    {
+      "language": "Greek",
+      "name": "Adjectives",
+      "fileName": "y9_gratin_greek_adj.pdf"
+    },
+    {
+      "language": "Greek",
+      "name": "Definite Article",
+      "fileName": "y9_gratin_greek_defart.pdf"
+    }
+  ]
+}
+```
