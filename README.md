@@ -27,7 +27,7 @@ As mentioned earlier, Grammarer is completely customisable. You can make it look
 ![Grammarer in custom colours](https://image.ibb.co/heAEi8/frame_chrome_mac_1.png)
 
 # Get started
-Grammarer is extremely simple to set up, but you'll need some basic knowledge of JavaScript and the command line, as well as a server to run it on.
+Grammarer is extremely simple to set up, but you'll need some basic knowledge of JavaScript and the command line, as well as a server to run it on. You'll also need to be relatively experienced with MongoDB as you will need to be handling Mongo queries to add grammar/vocab lists.
 
 1. First, make sure **NodeJS is installed**. You can try by running `node -v` in a command line. It should return something similar to `v8.9.4`. If not, visit [the NodeJS download page](https://nodejs.org/en/download/) and download it. It comes pre-packaged with NPM, which is also required for running Grammarer.
 
