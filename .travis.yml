@@ -12,7 +12,7 @@ before_install:
 install:
   - sudo apt-get install -y mongodb-org
   - npm install
-  - sudo npm install pm2 -g
+  - sudo $(which npm) install pm2 -g
 before_script:
   - sudo service mongod start
   - sleep 8s
