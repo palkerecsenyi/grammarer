@@ -20,3 +20,8 @@ Grammarer is **fully customisable**. Every colour. Every icon. Every title. Ever
 
 ### Full user management system
 Grammarer has a full user management system, powered by [MongoDB](https://www.mongodb.com/). Each user is given a **1-7 digit code** made of numbers and a prefix to represent the teacher it was assigned by. This allows students to **store their progress** on the server and access **averages and graphs to see their improvement**. Teachers can assign new codes and delete ones they don't need. They can even **auto-generate a sheet** of 16 printable codes.
+
+### Your own colours
+As mentioned earlier, Grammarer is completely customisable. You can make it look however you want. Your own colours, pictures and text.
+
+![Grammarer in custom colours](https://image.ibb.co/heAEi8/frame_chrome_mac_1.png)
