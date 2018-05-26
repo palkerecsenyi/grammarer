@@ -94,3 +94,22 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 
 ![node setup.js](https://image.ibb.co/ggW9GT/carbon_2.png)
 
+2. If this completes without error, you are ready to start the Grammarer server. If you do encounter an error, it will probably explain the issue and where it ocurred. To start the server, type:
+
+![npm start or npm run start-dev](https://image.ibb.co/kNUUGT/carbon_3.png)
+
+3. That's it! Visit the URL it shows in a web browser and sign in with the **default code 'admin'**. You can then access the 'Magic Dashboard' to create new users.
+
+# License and Attributions
+Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
+
+Grammarer would not be possible without:
+
+* Bulma.io CSS framework
+* AngularJS + router + animate
+* Cfp-Angular-Loading-bar
+* jsPdf PDF generator
+* NodeJS
+* MongoDB
+* Mocha
+
