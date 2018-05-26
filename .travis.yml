@@ -14,6 +14,6 @@ before_script:
   - sleep 8s
   - cat /var/log/mongodb/mongod.log
   - node setup
-  - pm2 start controller.js
+  - pm2-runtime controller.js
 script:
   - npm test
