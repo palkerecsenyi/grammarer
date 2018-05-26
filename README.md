@@ -113,6 +113,8 @@ You can choose to customise Grammarer using the `gm-options.json` file. The `org
 
 However, these options may not be sufficient for you. In this case, you can start by editing the four CSS files in `frontend`:
 
+| File name    | Content                                                                                                                                  |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | `loader.css` | Special markup to customise the centered loader spinner - see [this](https://github.com/chieffancypants/angular-loading-bar)             |
 | `mobile.css` | A tiny set of mobile-adapting customisations - not a lot to change here                                                                  |
 | `navbar.css` | Defines colours and styles for the Bulma navbar - colours are auto-set by setup.js                                                       |
