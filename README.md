@@ -91,5 +91,6 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 
 # Setup and run
 1. Once you have made the appropriate changes to `gm-options.json` and removed unnecessary demo data, you can run the automatic build script. Just simply type:
+
 ![node setup.js](https://image.ibb.co/ggW9GT/carbon_2.png)
 
