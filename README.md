@@ -76,3 +76,15 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
   ]
 }
 ```
+
+5. Edit the file to match your needs.
+
+| Name         | Type             | Description                                                                                                                                                                                                                                                           |
+|--------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| organisation | object           | Customisation definitions for your deployment of Grammarer. Every option is shown in the example above - the logo can be found in `frontend/img/example_school.png`.                                                                                                  |
+| rootUrl      | string           | The base URL the Grammarer will be hosted on. This should include http:// or https://.                                                                                                                                                                                |
+| ports        | object           | Contains the 'development' and 'production' values which define the port to host Grammarer on in each dev environment                                                                                                                                                 |
+| dbString     | string           | The MongoDB address for the database. In many cases, this will be `mongodb://localhost:27017`, but it will be different if your are using Atlas.                                                                                                                      |
+| features     | array of strings | An array of three different items - 'grammar', 'vocab' and 'printables' - to define which features should be enabled. Simply remove one to disable it.                                                                                                                |
+| languages    | array of strings | An array of the languages used in your implementation of Grammarer. These must start with a **lowercase character**                                                                                                                                                   |
+| printables   | array of objects | **Only required if printables are enabled.** Each object should contain `language` to show the language of the printable (starting with an uppercase character), `name` to describe the printable and `fileName` to state the file path relative from `frontend/pdf`. |
