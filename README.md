@@ -25,3 +25,14 @@ Grammarer has a full user management system, powered by [MongoDB](https://www.mo
 As mentioned earlier, Grammarer is completely customisable. You can make it look however you want. Your own colours, pictures and text.
 
 ![Grammarer in custom colours](https://image.ibb.co/heAEi8/frame_chrome_mac_1.png)
+
+# Get started
+Grammarer is extremely simple to set up, but you'll need some basic knowledge of JavaScript and the command line, as well as a server to run it on.
+
+1. First, make sure **NodeJS is installed**. You can try by running `node -v` in a command line. It should return something similar to `v8.9.4`. If not, visit [the NodeJS download page](https://nodejs.org/en/download/) and download it. It comes pre-packaged with NPM, which is also required for running Grammarer.
+
+2. Make sure **MongoDB is installed and running**. MongoDB is required to control the database of Grammarer. You can either host it locally (see [this](https://docs.mongodb.com/manual/administration/install-community/)) or through [Mongo Atlas](https://www.mongodb.com/cloud/atlas)
+
+3. Enter the directory that you want to contain the Grammarer source files in, and run:
+
+![git clone https://github.com/palkerecsenyi/grammarer.git](https://image.ibb.co/gpKeGT/carbon.png)
