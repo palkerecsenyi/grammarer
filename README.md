@@ -131,6 +131,7 @@ Grammarer would not be possible without:
 * AngularJS + router + animate
 * Cfp-Angular-Loading-bar
 * jsPdf PDF generator
+* jQuery
 * NodeJS
 * MongoDB
 * Mocha
