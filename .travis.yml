@@ -9,7 +9,7 @@ install:
   - apt-get install -y mongodb-org
   - npm install
 before_script:
-  - mongod
+  - service mongod start
   - node setup
   - npm start
 script:
