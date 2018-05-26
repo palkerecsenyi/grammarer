@@ -36,3 +36,7 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 3. Enter the directory that you want to contain the Grammarer source files in, and run:
 
 ![git clone https://github.com/palkerecsenyi/grammarer.git](https://image.ibb.co/gpKeGT/carbon.png)
+
+4. Enter the directory that the files were cloned into, and edit `gm-options.json` with your favourite text editor. Here is what it should look like:
+
+![JSON example](https://image.ibb.co/hPY0O8/carbon_1.png)
