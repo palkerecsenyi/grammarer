@@ -96,15 +96,4 @@
 </div>
 
 
-<p class="subtitle is-4 tk-rigid-square" style="margin:15px 0 5px;">Helping me</p>
-<p>If you want to add a grammar list to Grammarer, I'd appreciate your help a lot. Lists are made with JSON objects, in a specific format. This object is then uploaded to MongoDB and it gets seamlessly integrated into the user experience. Here is an example object - this defines declension 1 nouns in Latin: <a href="https://gist.github.com/palkerecsenyi/2ef89685392e511da1ba9484fce689a6">Gist</a></p>
-
-
-
-<p>It starts with a 'title', which is displayed across the site, usually along with the 'language'. The 'identifier' is a machine-only descriptor for the list. In this case, 'l' means 'Latin' and 'nouns_1' means '1st declension nouns'. The 'results' field must be an empty array - user results will be saved here.</p>
-<p style="margin: 10px 0 0;">The 'maxPosition' field describes the final cell in the list. The first number refers to the amount of columns, and the second to the amount of rows. Neither of these numbers can be greater than 9, for reasons that will soon become apparent. All numbers count from 1, not 0.</p>
-<p style="margin: 10px 0 0;">Next, the 'table' object describes the table itself. It has two root-level arrays - 'head' and 'body'. The 'head' section is an array of strings to be placed in order of definition in the head of the table. These are static names and are not used in the quiz itself. The'body' array contains several objects, each representing an individual row. The 'first' field is the bold, non-tested item at the start of each row, e.g. 'Nominative'. The 'cells' array contains several objects, each with two items. The 'name' is the actual content to be displayed. This can contain Greek characters and macron Latin characters without any special configuration. The 'id' field contains two numbers, which may seem connected but are actually not. This number will be applied as the DOM id of the cell in question. The first number is the column number (starting from 1). This cannot be greater than 9 (as the second number will then be 0) and cannot be greater than maxPosition[0]. The second number is the row number, which can also not be greater than 9 or maxPosition[1].</p>
-<p style="margin: 10px 0 0;">For more examples, visit 'https://grammarer.herokuapp.com/d/listdata?list=XXX', replacing XXX with the identifier of the list you'd like to see. This will return a minified JSON object representing the list, excluding result data.</p>
-<p style="margin: 10px 0 0;">Once you've made an object, you can email it to me and I will add it after review. You can use <a href="http://greek.typeit.org/">TypeIt</a> for typing Greek characters and you can use a Maori (NZ) keyboard for Latin macrons - press ` + a vowel in Windows.</p>
-
 <br>

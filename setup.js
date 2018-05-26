@@ -1,5 +1,6 @@
 let fs = require("fs");
 let css = require("css");
+let MongoClient = require("mongodb");
 
 function gmConsole(string, colour){
     console.log(`${colour}${string}\x1b[0m`);
@@ -32,10 +33,6 @@ fs.readFile("gm-options.json", function(err, config){
         gmConsole("Writing package.json", "\x1b[33m");
         fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2));
 
-        gmConsole("Writing frontend config", "\x1b[33m");
-        json.dbString = "";
-        fs.writeFileSync("frontend/gm-options.json", JSON.stringify(json));
-
         gmConsole("Reading navbar.css", "\x1b[33m");
         let navbar = fs.readFileSync("frontend/navbar.css", "utf-8");
         gmConsole("Parsing CSS", "\x1b[33m");
@@ -61,6 +58,36 @@ fs.readFile("gm-options.json", function(err, config){
         gmConsole("Writing loader.css", "\x1b[33m");
         fs.writeFileSync("frontend/loader.css", loader);
 
-        gmConsole("\n=======================================================\nDONE!\nRun 'npm start' or 'npm run start-dev' to run Grammarer\n=======================================================\n", "\x1b[31m");
+        gmConsole("Creating database", "\x1b[33m");
+        MongoClient.connect(json.dbString, function(err,client) {
+            if (err) throw err;
+            let dbo = client.db("grammarer-db");
+            dbo.collection("users").find({}).toArray((err,data)=>{
+                if(err) throw err;
+                if(data.length===0){
+                    dbo.collection("users").insertOne({
+                        code: "admin",
+                        deploy: "setup",
+                        card: false,
+                        role: "admin",
+                        lastAccess: 0
+                    },(err)=>{
+                        if(err) throw err;
+                        gmFinish();
+                    });
+                }else{
+                    gmFinish();
+                }
+            });
+        });
+
+        function gmFinish(){
+            gmConsole("Writing frontend config", "\x1b[33m");
+            json.dbString = "";
+            fs.writeFileSync("frontend/gm-options.json", JSON.stringify(json));
+
+            gmConsole("\n=======================================================\nDONE!\nRun 'npm start' or 'npm run start-dev' to run Grammarer\nUse the default code 'admin'\n=======================================================\n", "\x1b[31m");
+            process.exit();
+        }
     }
 });

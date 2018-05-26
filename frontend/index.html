@@ -34,7 +34,7 @@
         </a>
     </div>
     <div class="navbar-start" ng-if="$root.authed">
-        <a class="navbar-item" href="#!/about">About</a>
+        <a class="navbar-item" href="#!/about" ng-if="orgInfo.aboutPage">About</a>
         <a class="navbar-item" href="#!/exit">Sign out</a>
     </div>
 </nav>
