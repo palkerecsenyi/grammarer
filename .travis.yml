@@ -12,12 +12,13 @@ before_install:
 install:
   - sudo apt-get install -y mongodb-org
   - npm install
-  - npm install pm2 -g
+  - sudo npm install pm2 -g
 before_script:
   - sudo service mongod start
   - sleep 8s
   - cat /var/log/mongodb/mongod.log
   - node setup
-  - sudo $(which node) controller
+  - pm2 start controller.js
+  - sleep 8s
 script:
   - npm test
