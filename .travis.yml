@@ -11,7 +11,7 @@ before_install:
   - sudo ln -s /usr/local/lib/node /usr/lib/node
   - sudo ln -s /usr/local/bin/npm /usr/bin/npm
   - sudo ln -s /usr/local/bin/node-waf /usr/bin/node-waf
-  - sudo ln -s /usr/bin/nodejs /usr/bin/node
+  - sudo ln -s "$(which nodejs)" /usr/local/bin/node
 install:
   - sudo apt-get install -y mongodb-org
   - npm install
