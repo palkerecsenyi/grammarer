@@ -4,10 +4,10 @@
 
 <h1 align="center">Grammarer</h1>
 
+<p align="center">A grammar and vocab learning platform for schools.</p>
+
 </p>
 
-
-A grammar and vocab learning platform for schools.
 
 ![Grammarer screenshot](https://image.ibb.co/kzWOAo/frame_chrome_mac.png)
 
