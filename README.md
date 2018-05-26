@@ -88,3 +88,8 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 | features     | array of strings | An array of three different items - 'grammar', 'vocab' and 'printables' - to define which features should be enabled. Simply remove one to disable it.                                                                                                                |
 | languages    | array of strings | An array of the languages used in your implementation of Grammarer. These must start with a **lowercase character**                                                                                                                                                   |
 | printables   | array of objects | **Only required if printables are enabled.** Each object should contain `language` to show the language of the printable (starting with an uppercase character), `name` to describe the printable and `fileName` to state the file path relative from `frontend/pdf`. |
+
+# Setup and run
+1. Once you have made the appropriate changes to `gm-options.json` and removed unnecessary demo data, you can run the automatic build script. Just simply type:
+![node setup.js](https://image.ibb.co/ggW9GT/carbon_2.png)
+
