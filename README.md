@@ -107,7 +107,9 @@ node setup.js
 2. If this completes without error, you are ready to start the Grammarer server. If you do encounter an error, it will probably explain the issue and where it ocurred. To start the server, type:
 
 ```bash
-npm start or npm run start-dev
+npm start
+# or
+npm run start-dev
 ```
 
 3. That's it! Visit the URL it shows in a web browser and sign in with the **default code 'admin'**. You can then access the 'Magic Dashboard' to create new users.
