@@ -39,7 +39,13 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 git clone https://github.com/palkerecsenyi/grammarer.git
 ```
 
-4. Enter the directory that the files were cloned into, and edit `gm-options.json` with your favourite text editor. Here is what it should look like:
+4. Enter the directory that the files were cloned into, and run:
+
+```bash
+npm install
+```
+
+5. Edit `gm-options.json` with your favourite text editor. Here is what it should look like:
 
 ```json
 {
