@@ -648,6 +648,7 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                                 doc.text("Grammarer access codes x16 | Deploy "+$scope.pdfDeploy+" | All codes registered automatically", 20, 280);
                                 doc.save("a4.pdf");
                                 button.removeClass("is-loading");
+                                $route.reload();
                             }
                         } else {
                             throw new Error(data.error);

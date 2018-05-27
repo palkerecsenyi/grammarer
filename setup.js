@@ -26,12 +26,16 @@ fs.readFile("gm-options.json", function(err, config){
         gmConsole("Reading package.json", "\x1b[33m");
         let packageJson = JSON.parse(fs.readFileSync("package.json"));
 
+        json.dbString = '"' + json.dbString + '"';
+
         gmConsole("Setting ports", "\x1b[33m");
         packageJson.scripts.start = `set PORT=${json.ports.production}&&set DBSTRING=${json.dbString}&&node controller.js`;
         packageJson.scripts["start-dev"] = `set PORT=${json.ports.development}&&set DBSTRING=${json.dbString}&&node controller.js`;
 
         gmConsole("Writing package.json", "\x1b[33m");
         fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2));
+
+        json.dbString = json.dbString.replace(/"/g,"");
 
         gmConsole("Reading navbar.css", "\x1b[33m");
         let navbar = fs.readFileSync("frontend/navbar.css", "utf-8");

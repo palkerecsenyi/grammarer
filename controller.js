@@ -3,7 +3,7 @@ let app = express();
 let session = require('express-session');
 let cookieParser = require("cookie-parser");
 let MongoClient = require("mongodb");
-let MongoString = process.env.DBSTRING;
+let MongoString = process.env.DBSTRING.replace(/"/g,"");
 
 function gmConsole(string, colour){
     console.log(`${colour}${string}\x1b[0m`);
