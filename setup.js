@@ -100,7 +100,7 @@ fs.readFile("gm-options.json", function(err, config){
             json.dbString = "";
             fs.writeFileSync("frontend/gm-options.json", JSON.stringify(json));
 
-            gmConsole("\n=======================================================\nDONE!\nRun 'npm start' or 'npm run start-dev' to run Grammarer\nUse the default code 'admin'\n=======================================================\n", "\x1b[31m");
+            gmConsole("\n========================================================\nDONE!\nRun 'npm start' or 'npm run start-dev' to run Grammarer.\nUse the default code 'admin' to sign in.\n========================================================\n", "\x1b[31m");
             process.exit();
         }
     }
