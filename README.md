@@ -45,7 +45,7 @@ git clone https://github.com/palkerecsenyi/grammarer.git
 npm install
 ```
 
-5. Edit `gm-options.json` with your favourite text editor. Here is what it should look like:
+5. Open `gm-options.json` with your favourite text editor. Here is what it should look like:
 
 ```json
 {
