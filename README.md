@@ -166,14 +166,14 @@ Finally, you need to define the actual table itself, using the `table` key, whic
 | Name | Type | Content |
 |--------|------------------|---------------------------------------------------------------------------------------------|
 | `head` | array of strings | Each string defines a static piece of text to go in the head of the table (the first row) |
-| `rows` | array of objects | An array of every row (except the head) to be placed in the table. Each object should contain Object A (see below) |
+| `rows` | array of objects | An array of every row (except the head) to be placed in the table. Each object should contain **Object A** (see below) |
 
 ##### Object A
 
 | Name | Type | Content |
 |---------|------------------|-------------------------------------------------------------------------------------------------|
 | `first` | string | A static piece of text to go in the first column of the row (e.g. 'Nominative') |
-| `cells` | array of objects | An array of every dynamic (non-static) column to be placed in the row. Each object should contain Object B (see below) |
+| `cells` | array of objects | An array of every dynamic (non-static) column to be placed in the row. Each object should contain **Object B** (see below) |
 
 ##### Object B
 
