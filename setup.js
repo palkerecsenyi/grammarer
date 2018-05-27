@@ -1,6 +1,7 @@
 let fs = require("fs");
 let css = require("css");
 let MongoClient = require("mongodb");
+let getOS = require("getos");
 
 function gmConsole(string, colour){
     console.log(`${colour}${string}\x1b[0m`);
@@ -29,59 +30,68 @@ fs.readFile("gm-options.json", function(err, config){
         json.dbString = '"' + json.dbString + '"';
 
         gmConsole("Setting ports", "\x1b[33m");
-        packageJson.scripts.start = `set PORT=${json.ports.production}&&set DBSTRING=${json.dbString}&&node controller.js`;
-        packageJson.scripts["start-dev"] = `set PORT=${json.ports.development}&&set DBSTRING=${json.dbString}&&node controller.js`;
 
-        gmConsole("Writing package.json", "\x1b[33m");
-        fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2));
+        getOS(function(e,os){
+            if(e) return console.log(e);
 
-        json.dbString = json.dbString.replace(/"/g,"");
+            let command = "export";
+            if(os.os.startsWith("win")){
+                command = "set";
+            }
+            packageJson.scripts.start = `${command} PORT=${json.ports.production}&&${command} DBSTRING=${json.dbString}&&node controller.js`;
+            packageJson.scripts["start-dev"] = `${command} PORT=${json.ports.development}&&${command} DBSTRING=${json.dbString}&&node controller.js`;
 
-        gmConsole("Reading navbar.css", "\x1b[33m");
-        let navbar = fs.readFileSync("frontend/navbar.css", "utf-8");
-        gmConsole("Parsing CSS", "\x1b[33m");
-        navbar = css.parse(navbar, { source: "frontend/navbar.css" });
-        gmConsole("Changing colour rules", "\x1b[33m");
-        navbar.stylesheet.rules[0].declarations[0].value = json.organisation.primaryColour + "!important";
-        navbar.stylesheet.rules[1].declarations[1].value = json.organisation.primaryColour + "!important";
-        navbar.stylesheet.rules[2].declarations[0].value = json.organisation.secondaryColour + "!important";
-        gmConsole("Generating string", "\x1b[33m");
-        navbar = css.stringify(navbar);
-        gmConsole("Writing navbar.css", "\x1b[33m");
-        fs.writeFileSync("frontend/navbar.css", navbar);
+            gmConsole("Writing package.json", "\x1b[33m");
+            fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2));
 
-        gmConsole("Reading loader.css", "\x1b[33m");
-        let loader = fs.readFileSync("frontend/loader.css", "utf-8");
-        gmConsole("Parsing CSS", "\x1b[33m");
-        loader = css.parse(loader, { source: "frontend/loader.css" });
-        gmConsole("Changing colour rules", "\x1b[33m");
-        loader.stylesheet.rules[2].declarations[3].value = json.organisation.primaryColour;
-        loader.stylesheet.rules[2].declarations[4].value = json.organisation.primaryColour;
-        gmConsole("Generating string", "\x1b[33m");
-        loader = css.stringify(loader);
-        gmConsole("Writing loader.css", "\x1b[33m");
-        fs.writeFileSync("frontend/loader.css", loader);
+            json.dbString = json.dbString.replace(/"/g,"");
 
-        gmConsole("Creating database", "\x1b[33m");
-        MongoClient.connect(json.dbString, function(err,client) {
-            if (err) throw err;
-            let dbo = client.db("grammarer-db");
-            dbo.collection("users").find({}).toArray((err,data)=>{
-                if(err) throw err;
-                if(data.length===0){
-                    dbo.collection("users").insertOne({
-                        code: "admin",
-                        deploy: "setup",
-                        card: false,
-                        role: "admin",
-                        lastAccess: 0
-                    },(err)=>{
-                        if(err) throw err;
+            gmConsole("Reading navbar.css", "\x1b[33m");
+            let navbar = fs.readFileSync("frontend/navbar.css", "utf-8");
+            gmConsole("Parsing CSS", "\x1b[33m");
+            navbar = css.parse(navbar, { source: "frontend/navbar.css" });
+            gmConsole("Changing colour rules", "\x1b[33m");
+            navbar.stylesheet.rules[0].declarations[0].value = json.organisation.primaryColour + "!important";
+            navbar.stylesheet.rules[1].declarations[1].value = json.organisation.primaryColour + "!important";
+            navbar.stylesheet.rules[2].declarations[0].value = json.organisation.secondaryColour + "!important";
+            gmConsole("Generating string", "\x1b[33m");
+            navbar = css.stringify(navbar);
+            gmConsole("Writing navbar.css", "\x1b[33m");
+            fs.writeFileSync("frontend/navbar.css", navbar);
+
+            gmConsole("Reading loader.css", "\x1b[33m");
+            let loader = fs.readFileSync("frontend/loader.css", "utf-8");
+            gmConsole("Parsing CSS", "\x1b[33m");
+            loader = css.parse(loader, { source: "frontend/loader.css" });
+            gmConsole("Changing colour rules", "\x1b[33m");
+            loader.stylesheet.rules[2].declarations[3].value = json.organisation.primaryColour;
+            loader.stylesheet.rules[2].declarations[4].value = json.organisation.primaryColour;
+            gmConsole("Generating string", "\x1b[33m");
+            loader = css.stringify(loader);
+            gmConsole("Writing loader.css", "\x1b[33m");
+            fs.writeFileSync("frontend/loader.css", loader);
+
+            gmConsole("Creating database", "\x1b[33m");
+            MongoClient.connect(json.dbString, function(err,client) {
+                if (err) throw err;
+                let dbo = client.db("grammarer-db");
+                dbo.collection("users").find({}).toArray((err,data)=>{
+                    if(err) throw err;
+                    if(data.length===0){
+                        dbo.collection("users").insertOne({
+                            code: "admin",
+                            deploy: "setup",
+                            card: false,
+                            role: "admin",
+                            lastAccess: 0
+                        },(err)=>{
+                            if(err) throw err;
+                            gmFinish();
+                        });
+                    }else{
                         gmFinish();
-                    });
-                }else{
-                    gmFinish();
-                }
+                    }
+                });
             });
         });
 
