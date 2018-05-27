@@ -35,7 +35,9 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 
 3. Enter the directory that you want to contain the Grammarer source files in, and run:
 
-![git clone https://github.com/palkerecsenyi/grammarer.git](https://image.ibb.co/gpKeGT/carbon.png)
+```bash
+git clone https://github.com/palkerecsenyi/grammarer.git
+```
 
 4. Enter the directory that the files were cloned into, and edit `gm-options.json` with your favourite text editor. Here is what it should look like:
 
@@ -92,11 +94,15 @@ Grammarer is extremely simple to set up, but you'll need some basic knowledge of
 # Setup and run
 1. Once you have made the appropriate changes to `gm-options.json` and removed unnecessary demo data, you can run the automatic build script. Just simply type:
 
-![node setup.js](https://image.ibb.co/ggW9GT/carbon_2.png)
+```bash
+node setup.js
+```
 
 2. If this completes without error, you are ready to start the Grammarer server. If you do encounter an error, it will probably explain the issue and where it ocurred. To start the server, type:
 
-![npm start or npm run start-dev](https://image.ibb.co/kNUUGT/carbon_3.png)
+```bash
+npm start or npm run start-dev
+```
 
 3. That's it! Visit the URL it shows in a web browser and sign in with the **default code 'admin'**. You can then access the 'Magic Dashboard' to create new users.
 
