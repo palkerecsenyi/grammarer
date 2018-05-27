@@ -161,7 +161,15 @@ Next, you need to define the `maxPosition` array. This contains two integers, de
 | Left      | 0 = Amount of rows :: 1 = Amount of columns |
 | Down      | 0 = Amount of columns :: 1 = Amount of rows |
 
-#### This section is incomplete. More content will be added soon. Sorry for the inconvenience caused.
+Finally, you need to define the actual table itself, using the `table` key, which contains an object.
+
+| Name | Type | Content |
+|--------|------------------|---------------------------------------------------------------------------------------------|
+| `head` | array of strings | Each string defines a static piece of text to go in the head of the table (the first row) |
+| `rows` | array of objects | An array of every row (except the head) to be placed in the table. Each one should contain: | Name | Type | Content |
+                                                                                                                          |---------|------------------|-------------------------------------------------------------------------------------------------|
+                                                                                                                          | `first` | string | A static piece of text to go in the first column of the row (e.g. 'Nominative') |
+                                                                                                                          | `cells` | array of objects | An array of every dynamic (non-static) column to be placed in the row. Each one should contain: ||
 
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
