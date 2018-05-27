@@ -166,12 +166,21 @@ Finally, you need to define the actual table itself, using the `table` key, whic
 | Name | Type | Content |
 |--------|------------------|---------------------------------------------------------------------------------------------|
 | `head` | array of strings | Each string defines a static piece of text to go in the head of the table (the first row) |
-| `rows` | array of objects | An array of every row (except the head) to be placed in the table. Each one should contain: |
+| `rows` | array of objects | An array of every row (except the head) to be placed in the table. Each object should contain Object A (see below) |
+
+##### Object A
 
 | Name | Type | Content |
 |---------|------------------|-------------------------------------------------------------------------------------------------|
 | `first` | string | A static piece of text to go in the first column of the row (e.g. 'Nominative') |
-| `cells` | array of objects | An array of every dynamic (non-static) column to be placed in the row. Each one should contain: |
+| `cells` | array of objects | An array of every dynamic (non-static) column to be placed in the row. Each object should contain Object B (see below) |
+
+##### Object B
+
+| Name | Type | Content |
+|--------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `name` | string | The text to go in the cell. This will be hidden when the game is being played, but revealed when the 'Reveal' button is pressed. |
+| `id` | string (two consequent numbers) | The position of the cell in the table, in the same syntax as the `maxPosition` property, except as a combined string. |
 
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
