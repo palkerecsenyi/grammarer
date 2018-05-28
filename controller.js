@@ -419,6 +419,37 @@ MongoClient.connect(MongoString, function(err,client){
         }
     });
 
+    app.get("/d/randomcode", (req,res)=>{
+        if(req.session.authed&&(req.session.authrole==="teacher"||req.session.authrole==="admin")) {
+
+            let TargetCohort;
+            if (req.session.authrole === "teacher") {
+                TargetCohort = req.session.authcohort.name;
+            } else {
+                TargetCohort = req.query.cohort || req.session.authcohort.name
+            }
+
+            function doTry(){
+                let TryCode = Math.floor(Math.random() * 10000).toString();
+                dbo.collection("cohorts").findOne({
+                    name: TargetCohort,
+                    "users.code": TryCode
+                }, (err, data)=>{
+                    if(err) throw err;
+                    if(data!==null){
+                        doTry();
+                    }else{
+                        res.json({
+                            code: TryCode
+                        });
+                    }
+                });
+            }
+
+            doTry();
+        }
+    });
+
     app.get("/i/addlist", (req,res) => {
         if(req.session.authed&&req.session.authrole==="admin"){
             dbo.collection("lists").insertOne(JSON.parse(req.query.json), (err, response) => {

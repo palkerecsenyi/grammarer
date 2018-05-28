@@ -110,12 +110,14 @@
                 <!-- Teacher code (without prefix) -->
                 <div ng-if="adminRole==='teacher'">
                     <p style="margin-top: -18px; margin-bottom: 10px;">Will be created with role <code>student</code>.</p>
-                    <input type="number" max="9999" ng-model="newcode.code" ng-if="adminRole==='teacher'" placeholder="Code..." class="input is-medium" style="margin-bottom: 10px;">
+                    <button class="button is-small is-primary" ng-click="newcode.random()" style="margin-bottom:10px;">Generate random</button>
+                    <input type="text" max="9999" ng-model="newcode.code" ng-if="adminRole==='teacher'" placeholder="Code..." class="input is-medium" style="margin-bottom: 10px;">
                 </div>
 
                 <!-- Admin code (with prefix) -->
                 <div ng-if="adminRole==='admin'">
-                    <input type="number" limit-to="7" ng-model="newcode.code" placeholder="Code..." class="input is-medium" style="margin-bottom: 10px;">
+                    <button class="button is-small is-primary" ng-click="newcode.random()" style="margin-bottom:10px;">Generate random</button>
+                    <input type="text" limit-to="7" ng-model="newcode.code" placeholder="Code..." class="input is-medium" style="margin-bottom: 10px;">
 
                     <div style="margin-bottom: 15px;">
                         <label for="g-role">Role</label>

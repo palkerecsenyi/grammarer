@@ -744,4 +744,12 @@ g.controller("g-admin", function($scope,$http,$location,$route){
             $scope.tab = "codes";
         }
     };
+
+    $scope.newcode.random = function(){
+        $http.get("/d/randomcode?cohort="+$scope.newcode.cohort)
+            .then(function(data){
+                data = data.data;
+                $scope.newcode.code = data.code;
+            });
+    }
 });
