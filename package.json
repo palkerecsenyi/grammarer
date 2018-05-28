@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --timeout 5000",
     "start": "set PORT=80&&set DBSTRING=\"mongodb://localhost:27017\"&&node controller.js",
-    "start-dev": "set PORT=3000&&set DBSTRING=\"mongodb://localhost:27017\"&&node controller.js"
+    "start-dev": "set PORT=3000&&set DBSTRING=\"mongodb://localhost:27017\"&&node controller.js",
+    "dev-reset-db": "set DBSTRING=\"mongodb://localhost:27017\"&&node reset.js"
   },
   "author": "Pal Kerecsenyi",
   "license": "MIT",
@@ -20,6 +21,7 @@
     "getos": "^3.1.0",
     "mocha": "^5.1.1",
     "mongodb": "^3.0.7",
+    "prompt": "^1.0.0",
     "request": "^2.85.0"
   },
   "devDependencies": {}
