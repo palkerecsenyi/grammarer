@@ -570,6 +570,7 @@ g.controller("g-admin", function($scope,$http,$location,$route){
     $scope.newcohort = {};
     $scope.tab = "codes";
     $scope.modal = {show:false};
+    $scope.assign = {show:false};
     $http.get("/d/session")
         .then(function(data){
             data = data.data;
@@ -717,6 +718,42 @@ g.controller("g-admin", function($scope,$http,$location,$route){
         $scope.modal = {show: true, name: name, userCount: userCount, confirm: ""};
     };
 
+    $scope.aShowAssign = function(name, assigned){
+        $scope.assign = {
+            show: true,
+            name: name,
+            assigned:assigned,
+            newAssignment: {
+                listId: "",
+                addIt: function(listId){
+                    $http.get("/d/adminassigncohort?cohort="+name+"&listid="+listId)
+                        .then(function(data){
+                            data = data.data;
+                            if(data.error){
+                                alert(data.error);
+                            }else{
+                                $scope.assign.assigned.push(listId);
+                                $scope.assign.newAssignment.listId = "";
+                            }
+                        })
+
+                }
+            },
+            removeAssignment: function($event, listId){
+                $($event.currentTarget).addClass("is-loading");
+                $http.get("/d/adminunassigncohort?cohort="+name+"&listid="+listId)
+                    .then(function(data){
+                        data = data.data;
+                        $($event.currentTarget).removeClass("is-loading");
+                        if(data.success){
+                            const index = $scope.assign.assigned.indexOf(listId);
+                            $scope.assign.assigned.splice(index, 1);
+                        }
+                    });
+            }
+        };
+    };
+
     $scope.aDeleteCohort = function($event, name){
         let target = $($event.currentTarget);
         target.addClass("is-loading");
@@ -744,6 +781,7 @@ g.controller("g-admin", function($scope,$http,$location,$route){
         }else{
             $("#g-t-cohorts").removeClass("is-active");
             $scope.tab = "codes";
+            $route.reload();
         }
     };
 

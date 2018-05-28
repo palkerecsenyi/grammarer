@@ -1,6 +1,7 @@
 <nav class="breadcrumb">
     <ul>
         <li><a href="#!/">Home</a></li>
+        <li><a href="#!/lists">Lists</a></li>
         <li class="is-active"><a href="#!/admin">Magic Dashboard</a></li>
     </ul>
 </nav>
@@ -67,7 +68,9 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>User count</th>
+                                <th>Users</th>
+                                <th>Assigned lists</th>
+                                <th>Assign</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
@@ -75,6 +78,8 @@
                             <tr ng-repeat="c in cohorts">
                                 <td><strong>{{c.name}}</strong></td>
                                 <td>{{c.userCount}}</td>
+                                <td>{{c.assigned.length}}</td>
+                                <td><a href ng-click="aShowAssign(c.name, c.assigned)" class="button is-primary">Assign</a></td>
                                 <td><a href ng-click="aShowModal(c.name, c.userCount)" class="button is-danger">Delete</a></td>
                             </tr>
                         </tbody>
@@ -97,6 +102,46 @@
 
                     </div>
                     <button class="modal-close is-large" aria-label="close" ng-click="modal.show=false"></button>
+                </div>
+
+                <div class="modal" ng-class="{'is-active':assign.show}">
+                    <div class="modal-background" ng-click="assign.show = false"></div>
+                    <div class="modal-content">
+
+                        <div class="box">
+                            <p class="title is-2">Assign lists</p>
+                            <p class="subtitle is-5">Use this tool to assign lists to the <code>{{assign.name}}</code> cohort</p>
+
+                            <div class="g-table-container" ng-if="assign.assigned.length > 0" style="margin-bottom: 10px;">
+                                <table class="table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>List ID</th>
+                                            <th>Unassign</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="listId in assign.assigned">
+                                            <td><code>{{listId}}</code></td>
+                                            <td><a href ng-click="assign.removeAssignment($event, listId)" class="button is-danger">Unassign</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="notification is-primary" ng-if="assign.assigned.length === 0">
+                                No lists have been assigned to this cohort.
+                                <br/>
+                                <strong>Use the form below to assign one.</strong>
+                            </div>
+
+                            <p class="title is-4">New assignment</p>
+                            <input type="text" ng-model="assign.newAssignment.listId" class="input is-medium" placeholder="List ID...">
+                            <button class="button is-medium is-primary" ng-click="assign.newAssignment.addIt(assign.newAssignment.listId)" style="margin-top:10px;">Add</button>
+                        </div>
+
+                    </div>
+                    <button class="modal-close is-large" aria-label="close" ng-click="assign.show=false"></button>
                 </div>
 
             </div>

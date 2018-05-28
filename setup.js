@@ -78,16 +78,10 @@ fs.readFile("gm-options.json", function(err, config){
                 let dbo = client.db("grammarer-db");
                 dbo.collection("cohorts").find({}).toArray((err,data)=>{
                     if(err) throw err;
-                    /*
-                    code: "admin",
-                    deploy: "setup",
-                    card: false,
-                    role: "admin",
-                    lastAccess: 0
-                     */
                     if(data.length===0){
                         dbo.collection("cohorts").insertOne({
                             name: "staff",
+                            assigned: [],
                             users: [
                                 {
                                     code: "admin",

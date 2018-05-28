@@ -119,30 +119,31 @@ MongoClient.connect(MongoString, function(err,client){
     });
 
     app.get("/d/lists", function(req,res){
-        dbo.collection("lists").find({}).toArray(function(err,lists){
+        dbo.collection("cohorts").findOne({name:req.session.authcohort.name},(err,cohort)=>{
             if(err) throw err;
-            if(lists.length===0){
-                console.log("list length bad: "+JSON.stringify(lists));
-            }
-            const average = arr => arr.reduce((sume, el) => sume + el, 0) / arr.length;
-            for(var i in lists){
-                lists[i].table = null;
-                var results = lists[i].results;
-                results = results.filter(function(a){
-                    return a.code === req.session.authcode;
-                });
-                var scores = [];
-                for(var b in results){
-                    scores.push(results[b].percent);
+            dbo.collection("lists").find({identifier:{$in:cohort.assigned}}).toArray(function(err,lists){
+                if(err) throw err;
+                const average = arr => arr.reduce((sume, el) => sume + el, 0) / arr.length;
+                for(var i in lists){
+                    lists[i].table = null;
+                    lists[i].list = [];
+                    var results = lists[i].results;
+                    results = results.filter(function(a){
+                        return a.code === req.session.authcode;
+                    });
+                    var scores = [];
+                    for(var b in results){
+                        scores.push(results[b].percent);
+                    }
+                    lists[i].progress = average(scores);
+                    if(lists[i].progress==null||lists[i].progress==undefined){
+                        lists[i].progress = 0;
+                    }
+                    lists[i].results = null;
+                    lists[i].progress = Math.round(lists[i].progress);
                 }
-                lists[i].progress = average(scores);
-                if(lists[i].progress==null||lists[i].progress==undefined){
-                    lists[i].progress = 0;
-                }
-                lists[i].results = null;
-                lists[i].progress = Math.round(lists[i].progress);
-            }
-            res.json(lists);
+                res.json(lists);
+            });
         });
     });
 
@@ -366,6 +367,11 @@ MongoClient.connect(MongoString, function(err,client){
                             error: null
                         });
                     })
+                }else{
+                    res.json({
+                        success: false,
+                        error: "Cohort already exists, it contains "+finder.users.length+" users."
+                    });
                 }
             });
         }else{
@@ -415,6 +421,67 @@ MongoClient.connect(MongoString, function(err,client){
                     success: true,
                     error: null
                 });
+            });
+        }
+    });
+
+    app.get("/d/adminassigncohort", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin") {
+            let TargetCohort = req.query.cohort;
+            let TargetList = req.query.listid;
+            dbo.collection("lists").findOne({identifier: req.query.listid},(err,data)=>{
+                if(err) throw err;
+                if(data===null||data===undefined){
+                    res.json({
+                        success: false,
+                        error: "List does not exist"
+                    });
+                }else{
+                    dbo.collection("cohorts").updateOne({name: TargetCohort}, {$push:{assigned:TargetList}}, (err)=>{
+                        if(err) throw err;
+                        res.json({
+                            success: true,
+                            error: null
+                        });
+                    });
+                }
+            });
+
+        }else{
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
+            });
+        }
+    });
+
+    app.get("/d/adminunassigncohort", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin") {
+            dbo.collection("cohorts").findOne({name:req.query.cohort}, (err,cohort)=>{
+                if(err) throw err;
+
+                const index = cohort.assigned.indexOf(req.query.listid);
+                if(index !== -1){
+                    cohort.assigned.splice(index, 1);
+                    dbo.collection("cohorts").updateOne({name:req.query.cohort},{$set:{assigned:cohort.assigned}},(err)=>{
+                        if(err) throw err;
+                        res.json({
+                            success: true,
+                            error: null
+                        });
+                    });
+                }else{
+                    res.json({
+                        success: false,
+                        error: "Could not find list assignment to delete. Searched for "+req.query.listid+" in "+req.query.cohort
+                    });
+                }
+
+            });
+        }else{
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
             });
         }
     });
