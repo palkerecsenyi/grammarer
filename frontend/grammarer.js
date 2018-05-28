@@ -595,6 +595,7 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                                 $http.get("/d/adminaddcode?code="+$scope.newcode.code+"&deploy="+$scope.newdeploy+"&card="+$scope.newcard+"&role="+$scope.newcode.role+"&cohort="+$scope.newcode.cohort)
                                     .then(function(added){
                                         added = added.data;
+                                        $("#addbutton").removeClass("is-loading");
                                         if(added.success){
 
                                             window.setTimeout(function(){
@@ -603,6 +604,7 @@ g.controller("g-admin", function($scope,$http,$location,$route){
 
                                         }else{
                                             alert(added.error);
+                                            $route.reload();
                                         }
                                     })
                             };
