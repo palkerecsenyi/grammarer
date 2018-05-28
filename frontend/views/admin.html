@@ -17,23 +17,28 @@
 <div class="columns">
     <div class="column">
         <p class="subtitle is-4" style="margin-bottom: 5px;">Currently registered codes</p>
-        <p>Showing codes starting with <strong>{{prefix}}</strong></p>
-        <div class="g-table-container">
+        <p ng-if="adminRole==='teacher'">Showing codes belonging to cohort <code>{{cohort}}</code>. For security reasons, this list excludes users with role <code>admin</code>.</p>
+        <p ng-if="adminRole==='admin'">Showing all codes in database, independent of cohort.</p>
+        <div class="g-table-container" style="margin-top: 15px;">
             <table class="table" style="width: 100%;" id="aTable">
                 <thead>
                 <tr>
+                    <th ng-if="adminRole==='admin'">Cohort</th>
                     <th>Code</th>
                     <th>Deploy</th>
                     <th>Card?</th>
+                    <th>Role</th>
                     <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in data">
+                    <td ng-if="adminRole==='admin'"><code>{{item.cohort}}</code></td>
                     <td><strong>{{item.code}}</strong></td>
                     <td>{{item.deploy}}</td>
                     <td>{{item.card ? "Yes" : "No"}}</td>
-                    <td><a href ng-click="aDelete($event, item.code)" class="button is-danger">Delete</a></td>
+                    <td><code>{{item.role}}</code></td>
+                    <td><a href ng-click="aDelete($event, item.code, item.cohort)" class="button is-danger">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -43,8 +48,42 @@
         <p class="subtitle is-4">Add new code</p>
         <div class="control">
             <div class="field">
-                <input type="number" max="9999" ng-model="newcode" placeholder="Code (excluding prefix)..." class="input is-medium" style="margin-bottom: 10px;">
+                <!-- Teacher code (without prefix) -->
+                <div ng-if="adminRole==='teacher'">
+                    <p style="margin-top: -18px; margin-bottom: 10px;">Will be created with role <code>student</code>.</p>
+                    <input type="number" max="9999" ng-model="newcode.code" ng-if="adminRole==='teacher'" placeholder="Code..." class="input is-medium" style="margin-bottom: 10px;">
+                </div>
+
+                <!-- Admin code (with prefix) -->
+                <div ng-if="adminRole==='admin'">
+                    <input type="number" max="9999" ng-model="newcode.code" placeholder="Code..." class="input is-medium" style="margin-bottom: 10px;">
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="g-role">Role</label>
+                        <br/>
+                        <div class="select is-medium" style="width: 100%;">
+                            <select ng-model="newcode.role" id="g-role" style="width: 100%;">
+                                <option selected="selected" value="student">Student</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="g-cohort">Cohort</label>
+                        <br/>
+                        <div class="select is-medium" style="width: 100%;">
+                            <select ng-model="newcode.cohort" id="g-cohort" style="width: 100%;">
+                                <option ng-repeat="c in cohorts" ng-value="c.name">{{c.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
                 <input type="text" ng-model="newdeploy" placeholder="Deploy..." class="input is-medium" style="margin-bottom: 10px;">
+
                 <label class="checkbox">
                     <input type="checkbox" ng-model="newcard">
                     Deployed with card
@@ -52,6 +91,16 @@
             </div>
         </div>
         <button class="button is-medium is-primary" ng-click="addCode()" style="margin-top: 10px;" id="addbutton">Add code</button>
+
+        <div ng-if="adminRole==='admin'" style="margin-top:15px;">
+            <hr/>
+            <p class="subtitle is-4">Add new cohort</p>
+
+            <div class="notification is-danger">Warning! Cohorts can only be deleted by directly querying the database. <strong>Think before you type!</strong></div>
+
+            <input type="text" ng-model="newcohort.name" placeholder="Name..." class="input is-medium" style="margin-bottom: 10px;">
+            <button class="button is-medium is-primary" ng-click="addCohort()" id="cohortbutton">Add cohort</button>
+        </div>
 
         <hr/>
 

@@ -15,8 +15,17 @@
         <div class="notification is-danger" ng-if="problem">
             {{message}}
         </div>
-    
-        <input class="input is-large" type="text" placeholder="Code..." ng-model="code" maxlength="7" style="text-align: center;">
+
+        <label for="g-cohort">Cohort</label>
+        <br/>
+        <div class="select is-medium" style="width: 100%; margin-bottom: 10px;">
+            <select id="g-cohort" ng-model="cohort" style="width:100%;">
+                <option ng-repeat="c in cohorts" ng-value="c.name">{{c.name}}</option>
+            </select>
+        </div>
+
+        <label for="g-code">Code</label>
+        <input id="g-code" class="input is-medium" type="text" placeholder="Code..." ng-model="code" maxlength="7">
     
         <div class="has-text-centered" style="margin-top:15px">
             <button class="button is-primary is-centered is-medium" style="width: 100%;" ng-click="auth()" id="go">Go!</button>

@@ -75,15 +75,28 @@ fs.readFile("gm-options.json", function(err, config){
             MongoClient.connect(json.dbString, function(err,client) {
                 if (err) throw err;
                 let dbo = client.db("grammarer-db");
-                dbo.collection("users").find({}).toArray((err,data)=>{
+                dbo.collection("cohorts").find({}).toArray((err,data)=>{
                     if(err) throw err;
+                    /*
+                    code: "admin",
+                    deploy: "setup",
+                    card: false,
+                    role: "admin",
+                    lastAccess: 0
+                     */
                     if(data.length===0){
-                        dbo.collection("users").insertOne({
-                            code: "admin",
-                            deploy: "setup",
-                            card: false,
-                            role: "admin",
-                            lastAccess: 0
+                        dbo.collection("cohorts").insertOne({
+                            name: "staff",
+                            users: [
+                                {
+                                    code: "admin",
+                                    deploy: "setup",
+                                    card: false,
+                                    role: "admin",
+                                    owner: true,
+                                    lastAccess: 0
+                                }
+                            ]
                         },(err)=>{
                             if(err) throw err;
                             gmFinish();

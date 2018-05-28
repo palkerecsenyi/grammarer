@@ -182,6 +182,10 @@ Finally, you need to define the actual table itself, using the `table` key, whic
 | `name` | string | The text to go in the cell. This will be hidden when the game is being played, but revealed when the 'Reveal' button is pressed. |
 | `id` | string (two consequent numbers) | The position of the cell in the table, in the same syntax as the `maxPosition` property, except as a combined string. |
 
+### Vocab
+
+Vocab checklists are much simpler to build, as they only involve two definitive columns.
+
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
 

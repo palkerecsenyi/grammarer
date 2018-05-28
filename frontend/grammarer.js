@@ -85,7 +85,7 @@ g.controller("g-home", function($scope, $window, $location, $http, $rootScope){
     }else{
         $scope.auth = function(){
             $("#go").addClass("is-loading");
-            $http.get("/d/auth?code="+$scope.code)
+            $http.get("/d/auth?code="+$scope.code+"&cohort="+$scope.cohort)
                 .then(function(data){
                     data = data.data;
                     if(data.success){
@@ -99,6 +99,13 @@ g.controller("g-home", function($scope, $window, $location, $http, $rootScope){
                     }
                 });
         };
+
+        $http.get("/d/cohorts")
+            .then(function(data){
+                data = data.data;
+                $scope.cohorts = data;
+                $scope.cohort = data[0].name;
+            });
     }
     $("body").keyup(function(e){
         if(e.keyCode === 13){
@@ -546,11 +553,13 @@ g.controller("g-study-results", function($scope,$http,$rootScope){
 });
 
 g.controller("g-admin", function($scope,$http,$location,$route){
-    $scope.newcode = "";
+    $scope.newcode = {role:"student"};
     $scope.newdeploy = "";
+    $scope.newcohort = {};
     $http.get("/d/session")
         .then(function(data){
             data = data.data;
+            $scope.adminRole = data.adminRole;
             if(!data.admin){
                 $location.path("/lists");
             }else{
@@ -561,27 +570,39 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                             alert(codes.error);
                         }else{
                             $scope.data = codes.data;
-                            $scope.prefix = codes.prefix;
+                            $scope.cohort = codes.cohort;
+                            $http.get("/d/cohorts")
+                                .then(function(cohorts){
+                                    cohorts = cohorts.data;
+                                    $scope.cohorts = cohorts;
+                                    $scope.newcode.cohort = $scope.cohorts[0].name;
+                                });
                             $scope.addCode = function(){
                                 $("#addbutton").addClass("is-loading");
-                                $http.get("/d/adminaddcode?code="+$scope.newcode+"&deploy="+$scope.newdeploy+"&card="+$scope.newcard)
+
+                                $http.get("/d/adminaddcode?code="+$scope.newcode.code+"&deploy="+$scope.newdeploy+"&card="+$scope.newcard+"&role="+$scope.newcode.role+"&cohort="+$scope.newcode.cohort)
                                     .then(function(added){
                                         added = added.data;
                                         if(added.success){
-                                            $route.reload();
+
+                                            window.setTimeout(function(){
+                                                $route.reload();
+                                            }, 500);
+
                                         }else{
                                             alert(added.error);
                                         }
                                     })
-                            }
+                            };
                         }
                     })
             }
         });
-    $scope.aDelete = function($event, code){
+
+    $scope.aDelete = function($event, code, cohort){
         let button = $($event.currentTarget);
         button.addClass("is-loading");
-        $http.get("/d/admindelcode?code="+code)
+        $http.get("/d/admindelcode?code="+code+"&cohort="+cohort)
             .then(function(data){
                 data = data.data;
                 button.removeClass("is-loading");
@@ -592,7 +613,22 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                     alert(data.error);
                 }
             });
-    }
+    };
+    $scope.addCohort = function(){
+        $("#cohortbutton").addClass("is-loading");
+        $http.get("/d/adminaddcohort?name="+$scope.newcohort.name)
+            .then(function(data){
+                 data = data.data;
+
+                 $("#cohortbutton").removeClass("is-loading");
+
+                 if(data.success){
+                     $route.reload();
+                 }else{
+                     alert(data.error);
+                 }
+            });
+    };
     $scope.pdf = function($event){
         let button = $($event.currentTarget);
         button.addClass("is-loading");

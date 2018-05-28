@@ -30,29 +30,57 @@ MongoClient.connect(MongoString, function(err,client){
         res.sendFile(__dirname+"/frontend/index.html");
     });
 
+    app.get("/d/cohorts", (req,res)=>{
+        dbo.collection("cohorts").find({}).toArray((err, data)=>{
+            if(err) throw err;
+            for(let i in data){
+                data[i].users = [];
+            }
+            res.json(data);
+        });
+    });
+
     app.get("/d/auth", function(req,res){
         if(req.session.authed){
             res.json({success:true,error:null});
         }else{
-            dbo.collection("users").findOne({code:req.query.code},function(err,user){
+            dbo.collection("cohorts").findOne({name:req.query.cohort},function(err,cohort){
                 if(err) throw err;
+
+                let user = cohort.users.find((e)=>{
+                    return e.code === req.query.code;
+                });
+
                 if(user!==null&&user!==undefined){
                     req.session.authed = true;
                     req.session.authcode = req.query.code;
                     req.session.authrole = user.role;
                     req.session.authprefix = user.prefix || null;
+                    req.session.authcohort = {
+                        name: cohort.name,
+                        owner: user.owner
+                    };
+
                     res.json({
                         success:true,
                         error:null
                     });
-                    dbo.collection("users").updateOne({code:req.query.code},{$set:{lastAccess:Date.now()}},function(err){
+
+                    dbo.collection("cohorts").updateOne({
+                        name: cohort.name,
+                        "users.code": user.code
+                        },{
+                        $set: {
+                            "users.$.lastAccess": Date.now()
+                        }
+                    },function(err){
                         if(err) throw err;
-                    })
+                    });
                 }else{
                     req.session.authed = false;
                     res.json({
                         success:false,
-                        error:"Code not found"
+                        error:"Code not found - it may be in a different cohort"
                     });
                 }
             });
@@ -63,15 +91,21 @@ MongoClient.connect(MongoString, function(err,client){
         if(req.session.authed){
             let json = {
                 authenticated: true,
-                code: req.session.authcode
+                code: req.session.authcode,
+                cohort: req.session.authcohort,
+                adminRole: null
             };
             json.admin = (req.session.authrole==="admin" || req.session.authrole==="teacher");
+            if(json.admin){
+                json.adminRole = req.session.authrole
+            }
             res.json(json);
         }else{
             res.json({
                 authenticated: false,
                 code: null,
-                admin: false
+                admin: false,
+                adminRole: null
             });
         }
     });
@@ -217,22 +251,45 @@ MongoClient.connect(MongoString, function(err,client){
 
     app.get("/d/admincodes", (req,res) => {
         if(req.session.authed&&(req.session.authrole==="teacher"||req.session.authrole==="admin")){
-            let comparer;
-            comparer = req.session.authprefix ? new RegExp("(" + req.session.authprefix + ")", "g") : new RegExp("[\s\S]*", "g");
 
-            dbo.collection("users").find({code:{$regex: comparer}}).toArray((err,data)=>{
-                res.json({
-                    success:true,
-                    error:null,
-                    prefix: req.session.authprefix || "anything",
-                    data:data
+            if(req.session.authrole==="admin"){
+                dbo.collection("cohorts").find({}).toArray((err,data)=>{
+                    if(err) throw err;
+                    let result = [];
+                    for(let i in data){
+                        for(let b in data[i].users){
+                            data[i].users[b].cohort = data[i].name;
+                            result.push(data[i].users[b]);
+                        }
+                    }
+                    respond(result);
                 });
-            });
+            }else{
+                dbo.collection("cohorts").findOne({name:req.session.authcohort.name}, (err,data)=>{
+                    if(err) throw err;
+                    let result = [];
+                    for(let i in data.users){
+                        data.users[i].cohort = req.session.authcohort.name;
+                        if(data.users[i].role!=="admin"){
+                            result.push(data.users[i]);
+                        }
+                    }
+                    respond(result);
+                });
+            }
+            function respond(json){
+                res.json({
+                    success: true,
+                    error: null,
+                    cohort: req.session.authcohort.name,
+                    data: json
+                });
+            }
         }else{
             res.json({
                 success:false,
                 error:"User not signed in or is not admin",
-                prefix: null,
+                cohort: null,
                 data:null
             });
         }
@@ -240,22 +297,39 @@ MongoClient.connect(MongoString, function(err,client){
 
     app.get("/d/adminaddcode", (req,res)=>{
         if(req.session.authed&&(req.session.authrole==="teacher"||req.session.authrole==="admin")){
-            const prefix = req.session.authprefix || "";
-            const PrefixedCode = `${prefix}-${req.query.code}`;
-            dbo.collection("users").findOne({code: PrefixedCode}, function(err, content){
+
+            let Role;
+            let TargetCohort;
+            if(req.session.authrole==="teacher"){
+                Role = "student";
+                TargetCohort = req.session.authcohort.name;
+            }else{
+                Role = req.query.role || "student";
+                TargetCohort = req.query.cohort || req.session.authcohort.name
+            }
+
+            dbo.collection("cohorts").findOne({name: TargetCohort}, function(err, cohort){
                 if(err) throw err;
+                let content = cohort.users.find((e)=>{
+                    return e.code === req.query.code;
+                });
                 if(content===undefined||content===null){
-                    dbo.collection("users").insertOne({
-                        code: `${prefix}-${req.query.code}`,
-                        deploy: req.query.deploy,
-                        card: (req.query.card==="true"),
-                        role: "student",
-                        lastAccess: 0
+                    dbo.collection("cohorts").update({name:TargetCohort},{
+                        $push:{
+                            users:{
+                                code: req.query.code,
+                                deploy: req.query.deploy,
+                                card: (req.query.card==="true"),
+                                role: Role,
+                                owner: false,
+                                lastAccess: 0
+                            }
+                        }
                     });
                     res.json({
                         success: true,
                         error: null,
-                        code: PrefixedCode
+                        code: req.query.code
                     });
                 }else{
                     res.json({
@@ -273,30 +347,57 @@ MongoClient.connect(MongoString, function(err,client){
         }
     });
 
-    app.get("/d/admindelcode", (req,res)=>{
-        if(req.session.authed&&(req.session.authrole==="teacher"||req.session.authrole==="admin")){
-            let code = req.query.code;
-            if(req.session.authrole==="teacher"){
-                if(!code.startsWith(req.session.authprefix+"-")){
-                    res.json({
-                        success: false,
-                        error: "Code does not start with required prefix (" + req.session.authprefix + ")"
-                    });
-                }else{
-                    doDelete();
-                }
-            }else{
-                doDelete();
-            }
-            function doDelete(){
-                dbo.collection("users").deleteOne({code: code}, function(err){
-                    if(err) throw err;
-                    res.json({
-                        success:true,
-                        error: null
-                    });
+    app.get("/d/adminaddcohort", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin"){
+            dbo.collection("cohorts").find({}).toArray((err,data)=>{
+                if(err) throw err;
+                let finder = data.find((e)=>{
+                    return e.name === req.query.name
                 });
+                if(finder===null||finder===undefined){
+                    dbo.collection("cohorts").insertOne({
+                        name: req.query.name,
+                        users: []
+                    }, (err)=>{
+                        if(err) throw err;
+                        res.json({
+                            success: true,
+                            error: null
+                        });
+                    })
+                }
+            });
+        }else{
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
+            });
+        }
+    });
+
+    app.get("/d/admindelcode", (req,res)=>{
+        if(req.session.authed&&(req.session.authrole==="teacher"||req.session.authrole==="admin")) {
+            let code = req.query.code;
+            let TargetCohort;
+            if (req.session.authrole === "teacher") {
+                TargetCohort = req.session.authcohort.name
+            }else{
+                TargetCohort = req.query.cohort;
             }
+
+            dbo.collection("cohorts").updateOne({name:TargetCohort}, {
+                $pull:{
+                    users:{
+                        code: code
+                    }
+                }
+            }, function (err) {
+                if (err) throw err;
+                res.json({
+                    success: true,
+                    error: null
+                });
+            });
         }
     });
 
