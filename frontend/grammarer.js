@@ -38,6 +38,18 @@ g.config(function($routeProvider, $locationProvider){
         });
 });
 
+g.directive("limitTo", [function() {
+    return {
+        restrict: "A",
+        link: function(scope, elem, attrs) {
+            let limit = parseInt(attrs.limitTo);
+            angular.element(elem).on("keypress", function(e) {
+                if (this.value.length == limit) e.preventDefault();
+            });
+        }
+    }
+}]);
+
 g.controller("g-global",function($scope, $http, $rootScope, $location){
     $rootScope.$on('$routeChangeStart', function (next, last) {
         $http.get("/d/session")
