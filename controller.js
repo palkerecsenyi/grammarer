@@ -34,6 +34,7 @@ MongoClient.connect(MongoString, function(err,client){
         dbo.collection("cohorts").find({}).toArray((err, data)=>{
             if(err) throw err;
             for(let i in data){
+                data[i].userCount = data[i].users.length;
                 data[i].users = [];
             }
             res.json(data);
@@ -371,6 +372,23 @@ MongoClient.connect(MongoString, function(err,client){
             res.json({
                 success: false,
                 error: "Not signed in or is not admin"
+            });
+        }
+    });
+
+    app.get("/d/admindelcohort", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin"){
+            dbo.collection("cohorts").deleteOne({name: req.query.name}, (err)=>{
+                if(err) res.json({success:false, error:err});
+                res.json({
+                    success:true,
+                    error:null
+                });
+            })
+        }else{
+            res.json({
+                success:false,
+                error:"Not signed in or is not admin"
             });
         }
     });

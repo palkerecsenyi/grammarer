@@ -568,6 +568,8 @@ g.controller("g-admin", function($scope,$http,$location,$route){
     $scope.newcode = {role:"student"};
     $scope.newdeploy = "";
     $scope.newcohort = {};
+    $scope.tab = "codes";
+    $scope.modal = {show:false};
     $http.get("/d/session")
         .then(function(data){
             data = data.data;
@@ -707,5 +709,39 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                     });
             }
         }
-    }
+    };
+
+    $scope.aShowModal = function(name, userCount){
+        $scope.modal = {show: true, name: name, userCount: userCount, confirm: ""};
+    };
+
+    $scope.aDeleteCohort = function($event, name){
+        let target = $($event.currentTarget);
+        target.addClass("is-loading");
+
+        $http.get("/d/admindelcohort?name="+name)
+            .then(function(data){
+                data = data.data;
+
+                target.removeClass("is-loading");
+                if(data.success){
+                    $route.reload();
+                }else{
+                    alert(data.error);
+                }
+            });
+    };
+
+    $scope.switchTab = function($event){
+        let tab = $event.currentTarget;
+        $(tab.parentNode).addClass("is-active");
+
+        if(tab.parentNode.id === "g-t-cohorts"){
+            $("#g-t-codes").removeClass("is-active");
+            $scope.tab = "cohorts";
+        }else{
+            $("#g-t-cohorts").removeClass("is-active");
+            $scope.tab = "codes";
+        }
+    };
 });

@@ -16,33 +16,92 @@
 
 <div class="columns">
     <div class="column">
-        <p class="subtitle is-4" style="margin-bottom: 5px;">Currently registered codes</p>
-        <p ng-if="adminRole==='teacher'">Showing codes belonging to cohort <code>{{cohort}}</code>. For security reasons, this list excludes users with role <code>admin</code>.</p>
-        <p ng-if="adminRole==='admin'">Showing all codes in database, independent of cohort.</p>
-        <div class="g-table-container" style="margin-top: 15px;">
-            <table class="table" style="width: 100%;" id="aTable">
-                <thead>
-                <tr>
-                    <th ng-if="adminRole==='admin'">Cohort</th>
-                    <th>Code</th>
-                    <th>Deploy</th>
-                    <th>Card?</th>
-                    <th>Role</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="item in data">
-                    <td ng-if="adminRole==='admin'"><code>{{item.cohort}}</code></td>
-                    <td><strong>{{item.code}}</strong></td>
-                    <td>{{item.deploy}}</td>
-                    <td>{{item.card ? "Yes" : "No"}}</td>
-                    <td><code>{{item.role}}</code></td>
-                    <td><a href ng-click="aDelete($event, item.code, item.cohort)" class="button is-danger">Delete</a></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="tabs is-boxed" ng-if="adminRole==='admin'">
+            <ul>
+                <li ng-class="{'is-active': tab === 'codes'}" id="g-t-codes">
+                    <a ng-click="switchTab($event)">Codes</a>
+                </li>
+                <li ng-class="{'is-active': tab === 'cohorts'}" id="g-t-cohorts">
+                    <a ng-click="switchTab($event)">Cohorts</a>
+                </li>
+            </ul>
         </div>
+
+        <div id="g-t-switcher">
+            <div id="g-t-s-codes" ng-if="tab==='codes'">
+                <p class="subtitle is-4" style="margin-bottom: 5px;">Currently registered codes</p>
+                <p ng-if="adminRole==='teacher'">Showing codes belonging to cohort <code>{{cohort}}</code>. For security reasons, this list excludes users with role <code>admin</code>.</p>
+                <p ng-if="adminRole==='admin'">Showing all codes in database, independent of cohort.</p>
+
+                <div class="g-table-container" style="margin-top: 15px;">
+                    <table class="table" style="width: 100%;" id="aTable">
+                        <thead>
+                        <tr>
+                            <th ng-if="adminRole==='admin'">Cohort</th>
+                            <th>Code</th>
+                            <th>Deploy</th>
+                            <th>Card?</th>
+                            <th>Role</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in data">
+                            <td ng-if="adminRole==='admin'"><code>{{item.cohort}}</code></td>
+                            <td><strong>{{item.code}}</strong></td>
+                            <td>{{item.deploy}}</td>
+                            <td>{{item.card ? "Yes" : "No"}}</td>
+                            <td><code>{{item.role}}</code></td>
+                            <td><a href ng-click="aDelete($event, item.code, item.cohort)" class="button is-danger">Delete</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="g-t-s-cohorts" ng-if="tab==='cohorts'">
+                <p class="subtitle is-4" style="margin-bottom: 5px;">All cohorts</p>
+                <p>Showing all cohorts in database to an <code>admin</code> user.</p>
+                <div class="g-table-container" style="margin-top: 15px;">
+                    <table class="table" style="width: 100%;" id="aTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>User count</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="c in cohorts">
+                                <td><strong>{{c.name}}</strong></td>
+                                <td>{{c.userCount}}</td>
+                                <td><a href ng-click="aShowModal(c.name, c.userCount)" class="button is-danger">Delete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal" ng-class="{'is-active': modal.show}">
+                    <div class="modal-background" ng-click="modal.show = false"></div>
+                    <div class="modal-content">
+
+                        <div class="box">
+                            <p class="title is-2">Are you sure?</p>
+                            <p>You are about to delete an entire cohort, <strong>along with all {{modal.userCount}} users</strong> inside it.</p>
+                            <p><strong>This action <ins>cannot</ins> be undone.</strong></p>
+                            <p class="subtitle is-5" style="margin-top: 15px;">To continue, type the name of the cohort <code><span style="pointer-events: none; -webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;" >{{modal.name}}</span></code>:</p>
+
+                            <input type="text" placeholder="Name..." class="input is-medium" ng-model="modal.confirm" style="margin-top: -10px; margin-bottom: 10px;">
+                            <button ng-disabled="modal.confirm!==modal.name" class="button is-medium is-danger" ng-click="aDeleteCohort($event, modal.name)">Delete</button>
+                        </div>
+
+                    </div>
+                    <button class="modal-close is-large" aria-label="close" ng-click="modal.show=false"></button>
+                </div>
+
+            </div>
+        </div>
+
     </div>
     <div class="column">
         <p class="subtitle is-4">Add new code</p>
@@ -95,8 +154,6 @@
         <div ng-if="adminRole==='admin'" style="margin-top:15px;">
             <hr/>
             <p class="subtitle is-4">Add new cohort</p>
-
-            <div class="notification is-danger">Warning! Cohorts can only be deleted by directly querying the database. <strong>Think before you type!</strong></div>
 
             <input type="text" ng-model="newcohort.name" placeholder="Name..." class="input is-medium" style="margin-bottom: 10px;">
             <button class="button is-medium is-primary" ng-click="addCohort()" id="cohortbutton">Add cohort</button>
