@@ -698,9 +698,11 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                                 doc.setFontSize(10);
                                 doc.setTextColor(0, 0, 0);
                                 doc.text("Grammarer access codes x16 | Deploy "+$scope.pdfDeploy+" | All codes registered automatically", 20, 280);
-                                doc.save("a4.pdf");
-                                button.removeClass("is-loading");
-                                $route.reload();
+                                window.setTimeout(function(){
+                                    doc.save("a4.pdf");
+                                    button.removeClass("is-loading");
+                                    $route.reload();
+                                }, 500);
                             }
                         } else {
                             throw new Error(data.error);
