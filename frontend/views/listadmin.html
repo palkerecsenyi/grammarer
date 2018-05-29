@@ -52,14 +52,14 @@
                 <table id="table">
                     <thead>
                         <tr class="g-row g-fixed">
-                            <th ng-repeat="column in modal.table.head track by $index" ng-dblclick="listDblclick($event)">{{column}}</th>
+                            <th ng-repeat="column in modal.table.head" ng-dblclick="listDblclick($event)">{{column}}</th>
                             <th><button class="button is-primary" ng-click="addC()">+ Column</button></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in modal.table.rows track by $index" class="g-row g-fluid">
                             <th class="g-cell" ng-dblclick="listDblclick($event)">{{row.first}}</th>
-                            <td ng-repeat="cell in row.cells track by $index" class="g-content g-cell" ng-dblclick="listDblclick($event)">{{cell}}</td>
+                            <td ng-repeat="cell in row.cells" class="g-content g-cell" ng-dblclick="listDblclick($event)">{{cell}}</td>
                         </tr>
                         <tr>
                             <td><button class="button is-primary" ng-click="addR()">+ Row</button></td>
