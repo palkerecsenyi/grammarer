@@ -6,7 +6,7 @@
     "secondaryColour": "#4fbc4b",
     "aboutPage": true
   },
-  "rootUrl": "localhost",
+  "rootUrl": "http://localhost",
   "ports":{
     "development": "3000",
     "production": "80"
@@ -18,7 +18,7 @@
     "printables"
   ],
   "languages": [
-    "greek"
+    "german"
   ],
   "printables": [
     {

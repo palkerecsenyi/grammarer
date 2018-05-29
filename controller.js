@@ -331,7 +331,8 @@ MongoClient.connect(MongoString, function(err,client){
                     res.json({
                         success: true,
                         error: null,
-                        code: req.query.code
+                        code: req.query.code,
+                        cohort: TargetCohort
                     });
                 }else{
                     res.json({
@@ -359,6 +360,7 @@ MongoClient.connect(MongoString, function(err,client){
                 if(finder===null||finder===undefined){
                     dbo.collection("cohorts").insertOne({
                         name: req.query.name,
+                        assigned: [],
                         users: []
                     }, (err)=>{
                         if(err) throw err;

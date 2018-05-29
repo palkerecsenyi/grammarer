@@ -202,36 +202,6 @@ g.controller("g-lists-tab",function($scope,$rootScope,$http,$routeParams,$anchor
     }
 });
 
-g.controller("g-search", function($scope){
-    let client = algoliasearch("LVR9M3CEXL", "87e5f6ac8730b018995163f3e722d4fb");
-    let index = client.initIndex("gm-all");
-    $scope.doSearch = function(){
-        index.search({
-            query: $scope.searchQuery
-        }, (err, content)=>{
-            if(err) throw err;
-            for(let i in content.hits){
-                let th = content.hits[i];
-                let match;
-                if(th.type==="grammar"){
-                    match = $scope.$parent.lists.find(function(e){
-                        return e.identifier === th.identifier;
-                    });
-                }else{
-                    match = $scope.$parent.vocab.find(function(e){
-                        return e.identifier === th.identifier;
-                    });
-                }
-                content.hits[i].progress = match.progress + "%";
-            }
-            $scope.searchHits = content.hits;
-        });
-    }
-    $scope.hideSearch = function(){
-        $scope.searchHits = [];
-    }
-});
-
 g.controller("g-study",function($scope, $http, $routeParams, $rootScope, $route){
     $("body").off();
     $scope.listType = "grammar";
@@ -564,7 +534,7 @@ g.controller("g-study-results", function($scope,$http,$rootScope){
     }
 });
 
-g.controller("g-admin", function($scope,$http,$location,$route){
+g.controller("g-admin", function($scope,$http,$location,$route,$rootScope){
     $scope.newcode = {role:"student"};
     $scope.newdeploy = "";
     $scope.newcohort = {};
@@ -653,7 +623,7 @@ g.controller("g-admin", function($scope,$http,$location,$route){
         let doc = new jsPDF();
         doc.setTextColor(255, 255, 255);
         const width = 60;
-        const height = 20;
+        const height = 25;
 
         function randColor(){
             const rand = Math.floor(Math.random() * (0 - 4)) + 4;
@@ -675,6 +645,10 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                     .then(function (data) {
                         data = data.data;
                         if (data.success) {
+
+                            doc.setTextColor(255, 255, 255);
+
+
                             let xCord;
                             let yCord;
                             xCord = x === 1 ? 20 : 120;
@@ -691,9 +665,10 @@ g.controller("g-admin", function($scope,$http,$location,$route){
                             doc.setFontSize(15);
                             doc.setFontStyle("normal");
                             doc.text("Access code: " + data.code, xCord + 2, yCord + 12);
+                            doc.text("Cohort: " + data.cohort, xCord + 2, yCord + 18);
 
                             doc.setFontSize(10);
-                            doc.text("http://bit.ly/grammarer", xCord + 2, yCord + 17);
+                            doc.text($rootScope.config.rootUrl, xCord + 2, yCord + 23);
 
                             if(x===2&&i===8){
                                 doc.setFontSize(10);

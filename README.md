@@ -19,7 +19,7 @@ Grammarer is **fully customisable**. Every colour. Every icon. Every title. Ever
 ![Grammarer gif](https://image.ibb.co/iXUobT/capture.gif)
 
 ### Full user management system
-Grammarer has a full user management system, powered by [MongoDB](https://www.mongodb.com/). Each user is given a **1-7 digit code** made of numbers and a prefix to represent the teacher it was assigned by. This allows students to **store their progress** on the server and access **averages and graphs to see their improvement**. Teachers can assign new codes and delete ones they don't need. They can even **auto-generate a sheet** of 16 printable codes.
+Grammarer has a full user management system, powered by [MongoDB](https://www.mongodb.com/). Each user is given a **1-7 digit code** made of and is assigned to a cohort (a class) of other students. The cohort can then be assigned lists to access. This allows students to **store their progress** on the server and access **averages and graphs to see their improvement**. Teachers can assign new codes and delete ones they don't need. They can even **auto-generate a sheet** of 16 printable codes.
 
 ### Your own colours
 As mentioned earlier, Grammarer is completely customisable. You can make it look however you want. Your own colours, pictures and text.
@@ -180,11 +180,27 @@ Finally, you need to define the actual table itself, using the `table` key, whic
 | Name | Type | Content |
 |--------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | `name` | string | The text to go in the cell. This will be hidden when the game is being played, but revealed when the 'Reveal' button is pressed. |
-| `id` | string (two consequent numbers) | The position of the cell in the table, in the same syntax as the `maxPosition` property, except as a combined string. |
+| `id` | string (two consequent numbers) | The position of the cell in the table, in the same syntax as the `maxPosition` property, except as a combined string.
 
 ### Vocab
 
-Vocab checklists are much simpler to build, as they only involve two definitive columns.
+Vocab checklists are much simpler to build, as they only involve two definitive columns. They start with the same general definitions as in the first table of the [Grammar](#grammarer) list.
+
+An example is available [here](https://gist.github.com/palkerecsenyi/bf4761928d8955e011c71f0ce2e509ce)
+
+Instead of the `maxPosition` array, you need to use `vocabLength` to define the linear length of the vocab list - this should be an **integer**.
+
+Instead of the `table` property, you need to use the `list` array to define items. Each item in this array should be an **object**, containing two values:
+
+| Name | Type | Content |
+|------------|--------|--------------------------------------------------------------------------|
+| `original` | string | The original definition of the word, in the given language (not English) |
+| `english` | string | The English translation of the word. |
+
+When playing the vocab is a normal user, the two languages can be easily swapped around using the `Swap languages` button.
+
+# User control
+All user control can be done through the 'Magic Dashboard'. You can access this by clicking the small link at the bottom of the page shown to you once you sign in. **Only users with the role `teacher` or `admin` can access the dashboard.
 
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
