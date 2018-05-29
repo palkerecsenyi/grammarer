@@ -206,6 +206,7 @@ g.controller("g-study",function($scope, $http, $routeParams, $rootScope, $route)
     $("body").off();
     $scope.listType = "grammar";
     $rootScope.listId = $routeParams.listId;
+    $scope.listId = $rootScope.listId;
     $(document).ready(function(){
         $("html, body").animate({
             scrollTop: $("#g-action-box").offset().top + 30
@@ -359,6 +360,7 @@ g.controller("g-study-vocab", function($scope, $http, $rootScope, $routeParams, 
     $("body").off();
     $scope.listType = "vocab";
     $rootScope.listId = $routeParams.listId;
+    $scope.listId = $rootScope.listId;
     $(document).ready(function(){
         $("html, body").animate({
             scrollTop: $("#g-action-box").offset().top + 30
