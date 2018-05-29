@@ -80,7 +80,7 @@ fs.readFile("gm-options.json", function(err, config){
                     if(err) throw err;
                     if(data.length===0){
                         dbo.collection("cohorts").insertOne({
-                            name: "staff",
+                            name: "admins",
                             assigned: [],
                             users: [
                                 {

@@ -200,7 +200,11 @@ Instead of the `table` property, you need to use the `list` array to define item
 When playing the vocab is a normal user, the two languages can be easily swapped around using the `Swap languages` button.
 
 # User control
-All user control can be done through the 'Magic Dashboard'. You can access this by clicking the small link at the bottom of the page shown to you once you sign in. **Only users with the role `teacher` or `admin` can access the dashboard.
+All user control can be done through the 'Magic Dashboard'. You can access this by clicking the small link at the bottom of the page shown to you once you sign in. **Only users with the role `teacher` or `admin` can access the dashboard.**
+
+In Grammarer, a cohort represents a `class` of students and teacher(s). For example, a cohort could be `y9_german_1`. Most schools have their own naming convention for classes, which they can use easily with Grammarer. Every user belongs to a cohort, and only one cohort. If a teacher teaches multiple classes or a student takes multiple classes, they will need separate codes for each. By default, the `admins` cohort is created and the `admin` user is placed inside it. **Both of these should be deleted immeadiately** in order to avoid security issues.
+
+The default user can enter the dashboard and use the various tools, tabs and modals to create, delete and modify users and cohorts.
 
 # License and Attributions
 Grammarer is licensed under the MIT license, available [here](https://github.com/palkerecsenyi/grammarer/blob/master/LICENSE.md). Any contribution is welcome and everything will be considered.
