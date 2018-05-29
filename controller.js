@@ -519,6 +519,34 @@ MongoClient.connect(MongoString, function(err,client){
         }
     });
 
+    app.get("/d/adminlists", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin"){
+            dbo.collection("lists").find({}).toArray((err,data)=>{
+                if(err) throw err;
+                res.json(data);
+            });
+        }else{
+            res.send("Not authorised");
+        }
+    });
+
+    app.get("/d/admindellist", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin"){
+            dbo.collection("lists").deleteOne({identifier:req.query.listid},(err)=>{
+                if(err) throw err;
+                res.json({
+                    success: true,
+                    error: null
+                });
+            });
+        }else{
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
+            });
+        }
+    });
+
     app.get("/i/addlist", (req,res) => {
         if(req.session.authed&&req.session.authrole==="admin"){
             dbo.collection("lists").insertOne(JSON.parse(req.query.json), (err, response) => {

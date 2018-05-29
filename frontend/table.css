@@ -43,3 +43,18 @@
 #table .g-content{
     font-size: 1.75rem;
 }
+#table .g-selected-container{
+    padding: 0;
+    height: 100%;
+    position: relative;
+}
+#table .g-selected{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border: none;
+    padding: 15px;
+    font-size: 1.75rem;
+    background-color: lightblue;
+}

@@ -33,6 +33,10 @@ g.config(function($routeProvider, $locationProvider){
             templateUrl: "views/admin.html",
             controller: "g-admin"
         })
+        .when("/admin/lists",{
+            templateUrl: "views/listadmin.html",
+            controller: "g-admin-lists"
+        })
         .otherwise({
             templateUrl: "views/notfound.html"
         });
@@ -72,6 +76,10 @@ g.controller("g-global",function($scope, $http, $rootScope, $location){
             .then(function(data){
                 $rootScope.config = data.data;
                 $scope.orgInfo = $rootScope.config.organisation;
+            });
+        $http.get("https://api.github.com/repos/palkerecsenyi/grammarer/releases/latest")
+            .then(function(data){
+                $rootScope.gmRelease = data.data;
             });
     };
 });
@@ -769,4 +777,95 @@ g.controller("g-admin", function($scope,$http,$location,$route,$rootScope){
                 $scope.newcode.code = data.code;
             });
     }
+});
+
+g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope){
+    $scope.modal = {
+        show:false,
+        type:"grammar",
+        table:{
+            head:["My", "first", "table", "example"],
+            rows:[
+                {
+                    first: "Example",
+                    cells:["My", "first", "table"]
+                },
+                {
+                    first: "Example",
+                    cells:["My", "first", "table"]
+                },
+                {
+                    first: "Example",
+                    cells:["My", "first", "table"]
+                }
+            ]
+        }
+    };
+    $http.get("/d/adminlists")
+        .then(function(data){
+            data = data.data;
+            $scope.lists = data;
+        });
+
+
+    $scope.listDelete = function($event, listid){
+        let btn = $($event.currentTarget);
+        btn.addClass("is-loading");
+        $http.get("/d/admindellist?listid="+listid)
+            .then(function(data){
+                data = data.data;
+                btn.removeClass("is-loading");
+                if(data.success){
+                    $route.reload();
+                }else{
+                    alert(data.error);
+                }
+            });
+    }
+    $scope.listInsert = function(){
+        $scope.modal.show = true;
+    };
+    $scope.listDblclick = function(e){
+        if(document.body.classList.contains("g-table-selected")){
+            let element = document.getElementsByClassName("g-selected-container")[0];
+            element.innerHTML = element.childNodes[0].value;
+            element.classList.remove("g-selected-container");
+            document.body.classList.remove("g-table-selected");
+        }
+
+        let element = e.currentTarget;
+        let elementContent = element.innerHTML;
+
+        element.innerHTML = `<input type="text" value="${elementContent}" class="g-selected">`;
+        element.classList.add("g-selected-container");
+        document.body.classList.add("g-table-selected");
+
+        let input = element.childNodes[0];
+        input.select();
+
+        $(input).keypress(function(k){
+            if(k.which === 13) {
+                element.innerHTML = input.value;
+                $scope.modal.table.rows[element.parentNode.rowIndex - 1].cells[element.cellIndex - 1] = element.innerHTML;
+                element.classList.remove("g-selected-container");
+                document.body.classList.remove("g-table-selected");
+            }
+        });
+    }
+
+    $scope.addC = function(){
+        let random = Math.floor(Math.random()*1000).toString()
+        $scope.modal.table.head.push(random);
+        let table = $scope.modal.table.rows;
+        for(let i in table){
+            table[i].cells.push(random);
+        }
+        $scope.modal.table.rows = table;
+    };
+    $scope.addR = function(){
+        $scope.modal.table.rows.push({
+            first: "new",
+            cells: $scope.modal.table.rows[$scope.modal.table.rows.length - 1].cells
+        });
+    };
 });
