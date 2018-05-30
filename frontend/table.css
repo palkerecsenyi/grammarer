@@ -58,3 +58,9 @@
     font-size: 1.75rem;
     background-color: lightblue;
 }
+#table.g-table-editor td, #table.g-table-editor th{
+    min-width: 75px;
+}
+#table .g-row-filler{
+    min-height: 20px;
+}

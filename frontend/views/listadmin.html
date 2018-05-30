@@ -48,20 +48,42 @@
             <button class="delete" aria-label="close" ng-click="modal.show = false"></button>
         </header>
         <section class="modal-card-body">
+
             <div class="g-table-container">
-                <table id="table">
-                    <thead>
-                        <tr class="g-row g-fixed">
-                            <th ng-repeat="column in modal.table.head" ng-dblclick="listDblclick($event)">{{column}}</th>
-                            <th><button class="button is-primary" ng-click="addC()">+ Column</button></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in modal.table.rows track by $index" class="g-row g-fluid">
-                            <th class="g-cell" ng-dblclick="listDblclick($event)">{{row.first}}</th>
-                            <td ng-repeat="cell in row.cells" class="g-content g-cell" ng-dblclick="listDblclick($event)">{{cell}}</td>
-                        </tr>
-                        <tr>
+                <table id="table" class="g-table-editor">
+                            <thead>
+                            <tr class="g-row g-head g-fixed">
+                                <th ng-repeat="column in modal.table.head track by $index" ng-click="listDblclick($event)" ng-class="{'g-selected-container':column.editing}" class="g-cell">
+                                    <div ng-if="!column.editing">{{column.name}}</div>
+                                    <div ng-if="column.editing">
+                                        <input type="text" ng-model="column.name" class="g-selected" ng-keypress="listEnter($event, column)">
+                                    </div>
+                                    <div ng-if="$index!==0">
+                                        <a href ng-click="delC($event)">Delete</a>
+                                    </div>
+                                </th>
+                                <th><button class="button is-primary" ng-click="addC()">+ Column</button></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="row in modal.table.rows track by $index" class="g-row g-fluid">
+                                <th class="g-cell g-first" ng-click="listDblclick($event)" ng-class="{'g-selected-container':row.first.editing}">
+                                    <div ng-if="!row.first.editing" class="g-row-filler">{{row.first.name}}</div>
+                                    <div ng-if="row.first.editing" class="g-row-filler">
+                                        <input type="text" ng-model="row.first.name" class="g-selected" ng-keypress="listEnter($event, row.first)">
+                                    </div>
+                                    <div>
+                                        <a href ng-click="delR($event)">Delete</a>
+                                    </div>
+                                </th>
+                                <td ng-repeat="cell in row.cells track by $index" class="g-content g-cell" ng-click="listDblclick($event)" ng-class="{'g-selected-container':cell.editing}">
+                                    <div ng-if="!cell.editing" class="g-row-filler">{{cell.name}}</div>
+                                    <div ng-if="cell.editing" class="g-row-filler">
+                                        <input type="text" ng-model="cell.name" class="g-selected" ng-keypress="listEnter($event, cell)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                             <td><button class="button is-primary" ng-click="addR()">+ Row</button></td>
                         </tr>
                     </tbody>
