@@ -1,0 +1,150 @@
+<nav class="breadcrumb">
+    <ul>
+        <li><a href="#!/">Home</a></li>
+        <li><a href="#!/lists">Lists</a></li>
+        <li><a href="#!/admin">Magic Dashboard</a></li>
+        <li class="is-active"><a href="#!/admin/tables">List manager</a></li>
+    </ul>
+</nav>
+
+<p class="title is-3 tk-rigid-square">List manager</p>
+<p>This page enables admins and teachers to manage lists and create them using the Grammarer Table Builder.</p>
+
+<hr/>
+
+<button class="button is-medium is-primary" style="margin-bottom:10px;" ng-click="listInsert()">Add grammar list</button>
+
+<div class="g-table-container">
+    <table class="table" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Language</th>
+                <th>Name</th>
+                <th>Type</th>
+
+                <th>Delete</th>
+                <!--<th>Edit</th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="list in lists">
+                <td><code>{{list.identifier}}</code></td>
+                <td>{{list.language}}</td>
+                <td><strong>{{list.title || "Checklist "+list.number}}</strong></td>
+                <td>{{list.type}}</td>
+                <td><button class="button is-danger" ng-click="listDelete($event, list.identifier)">Delete</button></td>
+                <!--<td><button class="button is-primary" ng-click="listEdit($event, list.identifier)">Edit</button></td>-->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal" ng-class="{'is-active': modal.show}">
+    <div class="modal-background" ng-click="modal.show = false"></div>
+    <div class="modal-card" style="width: unset;">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Add new grammar list</p>
+            <button class="delete" aria-label="close" ng-click="modal.show = false"></button>
+        </header>
+        <section class="modal-card-body">
+
+            <div class="g-table-container" ng-if="modal.slide === 1">
+                <table id="table" class="g-table-editor">
+                            <thead>
+                            <tr class="g-row g-head g-fixed">
+                                <th ng-repeat="column in modal.table.head track by $index" ng-click="listDblclick($event)" ng-class="{'g-selected-container':column.editing}" class="g-cell">
+                                    <div ng-if="!column.editing">{{column.name}}</div>
+                                    <div ng-if="column.editing">
+                                        <input type="text" ng-model="column.name" class="g-selected" ng-keypress="listEnter($event, column)">
+                                    </div>
+                                    <div ng-if="$index!==0">
+                                        <a href ng-click="delC($event)">Delete</a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <button class="button is-primary" ng-click="addC($event)">+ Column</button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="row in modal.table.rows track by $index" class="g-row g-fluid">
+                                <th class="g-cell g-first" ng-click="listDblclick($event)" ng-class="{'g-selected-container':row.first.editing}">
+                                    <div ng-if="!row.first.editing" class="g-row-filler">{{row.first.name}}</div>
+                                    <div ng-if="row.first.editing" class="g-row-filler">
+                                        <input type="text" ng-model="row.first.name" class="g-selected" ng-keypress="listEnter($event, row.first)">
+                                    </div>
+                                    <div>
+                                        <a href ng-click="delR($event)">Delete</a>
+                                    </div>
+                                </th>
+                                <td ng-repeat="cell in row.cells track by $index" class="g-content g-cell" ng-click="listDblclick($event)" ng-class="{'g-selected-container':cell.editing}">
+                                    <div ng-if="!cell.editing" class="g-row-filler">{{cell.name}}</div>
+                                    <div ng-if="cell.editing" class="g-row-filler">
+                                        <input type="text" ng-model="cell.name" class="g-selected" ng-keypress="listEnter($event, cell)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                            <td><button class="button is-primary" ng-click="addR()">+ Row</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div ng-if="modal.slide === 2">
+                <p class="subtitle is-4">Information</p>
+
+                <label for="g-i-name">Give your list a descriptive name</label>
+                <input id="g-i-name" ng-model="modal.setup.name" class="input" style="margin-bottom: 15px;">
+
+                <label for="g-i-language">Select the language it belongs to</label>
+                <br/>
+                <div class="select" style="width:100%; margin-bottom: 15px;">
+                    <select id="g-i-language" ng-model="modal.setup.language" style="width:100%;">
+                        <option ng-repeat="lang in config.languages">{{lang}}</option>
+                    </select>
+                </div>
+
+                <label for="g-i-id">Give it a machine-readable (not shown to users) identifier code</label>
+                <input id="g-i-id" ng-model="modal.setup.identifier" class="input" style="margin-bottom: 15px;">
+
+                <label for="g-i-dir">What direction should the list go in?</label>
+                <br/>
+                <div class="select" style="margin-bottom: 15px;">
+                    <select id="g-i-dir" ng-model="modal.setup.direction">
+                        <option value="left">Left</option>
+                        <option value="down" selected>Down</option>
+                    </select>
+                </div>
+
+                <hr/>
+
+                <p class="subtitle is-4">Preview</p>
+                <div class="columns">
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">{{ modal.setup.language[0].toUpperCase() + modal.setup.language.substring(1) }} | {{ modal.setup.name }}</p>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    <p>Average score: 50%</p>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href class="card-footer-item">Study!</a>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-success" ng-click="modal.slide = 2" ng-if="modal.slide === 1">Continue</button>
+            <button class="button is-success" ng-click="listSave($event)" ng-if="modal.slide === 2">Complete</button>
+            <button class="button" ng-click="modal.slide = 1" ng-if="modal.slide === 2">Back</button>
+            <button class="button is-warning" ng-click="modal.show = false">Close</button>
+        </footer>
+    </div>
+</div>

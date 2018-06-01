@@ -41,6 +41,7 @@ fs.readFile("gm-options.json", function(err, config){
             packageJson.scripts.start = `${command} PORT=${json.ports.production}&&${command} DBSTRING=${json.dbString}&&node controller.js`;
             packageJson.scripts["start-dev"] = `${command} PORT=${json.ports.development}&&${command} DBSTRING=${json.dbString}&&node controller.js`;
             packageJson.scripts["dev-reset-db"] = `${command} DBSTRING=${json.dbString}&&node reset.js`;
+            packageJson.version = json.gmVersion;
 
             gmConsole("Writing package.json", "\x1b[33m");
             fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2));

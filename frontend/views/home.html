@@ -34,7 +34,20 @@
         <p class="subtitle has-text-grey has-text-centered" style="margin-top: 10px;">{{orgInfo.name}}</p>
     </div>
     <p class="has-text-grey has-text-centered">For optimal functionality, don't use Edge or IE.<br>Grammarer works best in Chrome.</p>
-    <div style="position: fixed; bottom: 0; right: 0; left: 0; padding: 10px 0; background: white;">
-        <p class="has-text-grey" style="text-align: center;">Copyright © 2018 Pal Kerecsenyi.</p>
+    <div style="position: fixed; bottom: 0; right: 0; left: 0; padding: 10px 0; background: white; z-index: 4;" class="has-text-grey has-text-centered">
+        <p>
+            <a href="https://github.com/palkerecsenyi/grammarer" target="_blank">
+                Grammarer
+            </a> |
+            Latest version
+            <a href="{{gmRelease.html_url}}" target="_blank">
+                {{gmRelease.tag_name}}
+            </a> |
+            This version
+            <a href="https://github.com/palkerecsenyi/grammarer/releases/tag/v{{config.gmVersion}}" target="_blank">
+                v{{config.gmVersion}}
+            </a>
+        </p>
+        <p>Copyright © 2018 Pal Kerecsenyi.</p>
     </div>
 </div>

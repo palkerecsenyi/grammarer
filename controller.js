@@ -519,14 +519,60 @@ MongoClient.connect(MongoString, function(err,client){
         }
     });
 
-    app.get("/i/addlist", (req,res) => {
+    app.get("/d/adminlists", (req,res)=>{
         if(req.session.authed&&req.session.authrole==="admin"){
-            dbo.collection("lists").insertOne(JSON.parse(req.query.json), (err, response) => {
+            dbo.collection("lists").find({}).toArray((err,data)=>{
                 if(err) throw err;
-                res.send(response);
+                res.json(data);
             });
         }else{
             res.send("Not authorised");
+        }
+    });
+
+    app.get("/d/admindellist", (req,res)=>{
+        if(req.session.authed&&req.session.authrole==="admin"){
+            dbo.collection("lists").deleteOne({identifier:req.query.listid},(err)=>{
+                if(err) throw err;
+                res.json({
+                    success: true,
+                    error: null
+                });
+            });
+        }else{
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
+            });
+        }
+    });
+
+    app.get("/d/adminaddlist", (req,res) => {
+        if(req.session.authed&&req.session.authrole==="admin"){
+            let json = JSON.parse(req.query.json);
+            dbo.collection("lists").findOne({identifier: json.identifier}, (err, list)=>{
+                if(err) throw err;
+                if(list==null){
+                    dbo.collection("lists").insertOne(JSON.parse(req.query.json), (err, response) => {
+                        if(err) throw err;
+                        res.json({
+                            success: true,
+                            response: response,
+                            error: null
+                        });
+                    });
+                }else{
+                    res.json({
+                        success: false,
+                        error: "List with identifier '"+json.identifier+"' already exists"
+                    });
+                }
+            });
+        }else{
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
+            });
         }
     });
 
