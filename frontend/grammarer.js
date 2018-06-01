@@ -811,6 +811,13 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
                     ]
                 }
             ]
+        },
+        slide: 1,
+        setup:{
+            name: "",
+            language: $rootScope.config.languages[0],
+            identifier: "",
+            direction: "down"
         }
     };
     $http.get("/d/adminlists")
@@ -888,33 +895,41 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
         }
     };
 
-    $scope.addC = function(){
-        $scope.modal.table.head.push({
-            name: " ",
-            editing: false
-        });
-        let table = $scope.modal.table.rows;
-        for(let i in table){
-            table[i].cells.push({
+    $scope.addC = function($event){
+        if($event.currentTarget.parentNode.cellIndex <= 9){
+            $scope.modal.table.head.push({
                 name: " ",
                 editing: false
             });
+            let table = $scope.modal.table.rows;
+            for(let i in table){
+                table[i].cells.push({
+                    name: " ",
+                    editing: false
+                });
+            }
+            $scope.modal.table.rows = table;
+        }else{
+            alert("Column count limit (9) reached.");
         }
-        $scope.modal.table.rows = table;
     };
 
     $scope.addR = function(){
         let cells = [];
-        for(let i = 0; i < $scope.modal.table.rows[$scope.modal.table.rows.length - 1].cells.length; i++){
-            cells.push({
-                name: " ",
-                editing: false
+        if($scope.modal.table.rows.length + 1 <= 9){
+            for(let i = 0; i < $scope.modal.table.rows[$scope.modal.table.rows.length - 1].cells.length; i++){
+                cells.push({
+                    name: " ",
+                    editing: false
+                });
+            }
+            $scope.modal.table.rows.push({
+                first: {name: "", editing: false},
+                cells: cells
             });
+        }else{
+            alert("Row count limit (9) reached.");
         }
-        $scope.modal.table.rows.push({
-            first: {name: "", editing: false},
-            cells: cells
-        });
     };
 
     $scope.delC = function($event){
@@ -930,11 +945,75 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
     };
 
     $scope.delR = function($event){
-        //$event.stopPropagation();
+        $event.stopPropagation();
 
         let element = $event.currentTarget.parentNode.parentNode.parentNode;
         let rowIndex = element.rowIndex - 1;
 
         $scope.modal.table.rows.splice(rowIndex, 1);
-    }
+    };
+
+    $scope.listSave = function($event){
+        let btn = $($event.currentTarget);
+        btn.addClass("is-loading");
+
+        $scope.modal.generatedTable = {table:{head:[], rows:[]}};
+
+        $scope.modal.generatedTable.title = $scope.modal.setup.name;
+        $scope.modal.generatedTable.language = $scope.modal.setup.language[0].toUpperCase() + $scope.modal.setup.language.substring(1);
+        $scope.modal.generatedTable.identifier = $scope.modal.setup.identifier;
+        $scope.modal.generatedTable.type = "grammar";
+        $scope.modal.generatedTable.results = [];
+
+        $scope.modal.generatedTable.maxPosition = [0, 0];
+        if($scope.modal.setup.direction === "left"){
+            $scope.modal.generatedTable.maxPosition[0] = $scope.modal.table.rows.length;
+            $scope.modal.generatedTable.maxPosition[1] = $scope.modal.table.head.length - 1;
+        }else{
+            $scope.modal.generatedTable.maxPosition[0] = $scope.modal.table.head.length - 1;
+            $scope.modal.generatedTable.maxPosition[1] = $scope.modal.table.rows.length;
+        }
+
+        for(let i in $scope.modal.table.head){
+            $scope.modal.generatedTable.table.head.push($scope.modal.table.head[i].name);
+        }
+
+        for(let i in $scope.modal.table.rows){
+            $scope.modal.generatedTable.table.rows.push({first: "", cells: []});
+            $scope.modal.generatedTable.table.rows[i].first = $scope.modal.table.rows[i].first.name;
+
+            for(let x in $scope.modal.table.rows[i].cells){
+                $scope.modal.generatedTable.table.rows[i].cells.push({name: "", id: ""});
+                $scope.modal.generatedTable.table.rows[i].cells[x].name = $scope.modal.table.rows[i].cells[x].name;
+
+                $scope.modal.generatedTable.table.rows[i].cells[x].id = [0, 0];
+                if($scope.modal.setup.direction === "left"){
+                    $scope.modal.generatedTable.table.rows[i].cells[x].id[0] = parseInt(i) + 1;
+                    $scope.modal.generatedTable.table.rows[i].cells[x].id[1] = parseInt(x) + 1;
+                }else{
+                    $scope.modal.generatedTable.table.rows[i].cells[x].id[0] = parseInt(x) + 1;
+                    $scope.modal.generatedTable.table.rows[i].cells[x].id[1] = parseInt(i) + 1;
+                }
+
+                $scope.modal.generatedTable.table.rows[i].cells[x].id = $scope.modal.generatedTable.table.rows[i].cells[x].id.join("").toString();
+            }
+        }
+
+        $http.get("/d/adminaddlist?json="+JSON.stringify($scope.modal.generatedTable))
+            .then(function(data){
+                data = data.data;
+                btn.removeClass("is-loading");
+
+                if(data.success){
+                    $route.reload();
+                }else{
+                    alert(data.error);
+                }
+            });
+    };
+
+    $scope.listEdit = function($event, id){
+        $scope.modal
+    };
+
 });

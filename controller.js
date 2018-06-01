@@ -547,14 +547,32 @@ MongoClient.connect(MongoString, function(err,client){
         }
     });
 
-    app.get("/i/addlist", (req,res) => {
+    app.get("/d/adminaddlist", (req,res) => {
         if(req.session.authed&&req.session.authrole==="admin"){
-            dbo.collection("lists").insertOne(JSON.parse(req.query.json), (err, response) => {
+            let json = JSON.parse(req.query.json);
+            dbo.collection("lists").findOne({identifier: json.identifier}, (err, list)=>{
                 if(err) throw err;
-                res.send(response);
+                if(list==null){
+                    dbo.collection("lists").insertOne(JSON.parse(req.query.json), (err, response) => {
+                        if(err) throw err;
+                        res.json({
+                            success: true,
+                            response: response,
+                            error: null
+                        });
+                    });
+                }else{
+                    res.json({
+                        success: false,
+                        error: "List with identifier '"+json.identifier+"' already exists"
+                    });
+                }
             });
         }else{
-            res.send("Not authorised");
+            res.json({
+                success: false,
+                error: "Not signed in or is not admin"
+            });
         }
     });
 
