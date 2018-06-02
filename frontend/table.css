@@ -64,3 +64,42 @@
 #table .g-row-filler{
     min-height: 20px;
 }
+
+.g-overlay{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ebebeb;
+    z-index: 30;
+    overflow: auto;
+    opacity: 0.9;
+    display: none;
+
+    text-align: center;
+    padding: 25vh 10px 0;
+}
+.g-overlay.is-active{
+    display: block;
+}
+.g-onboarding-relative{
+    position: relative;
+}
+.g-onboarding-mod{
+    position: absolute;
+    display: block;
+    background-color: #00d1b2;
+    color: white !important;
+    text-align: left;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    top: 125%;
+    left: 20%;
+}
+.g-onboarding-mod .subtitle{
+    color: white;
+    margin-bottom: 0;
+}

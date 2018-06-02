@@ -1,4 +1,4 @@
-var g = angular.module("grammarer", ["ngRoute","angular-loading-bar","ngAnimate","googlechart"]);
+var g = angular.module("grammarer", ["ngRoute","ngCookies","angular-loading-bar","ngAnimate","googlechart"]);
 
 g.config(function($routeProvider, $locationProvider){
     $routeProvider
@@ -210,6 +210,31 @@ g.controller("g-lists-tab",function($scope,$rootScope,$http,$routeParams,$anchor
     }
 });
 
+g.controller("g-study-onboarding", function($scope, $cookies){
+    let test = $cookies.get("g-tutorial");
+
+    $scope.$parent.onb = {
+        active: false,
+        slide: 0
+    };
+
+    $scope.onboard = false;
+    if(test == null){
+        $cookies.put("g-tutorial", "true");
+        $scope.onboard = true;
+
+        $scope.begin = function(){
+            $scope.onboard = false;
+            $scope.$parent.dismissScroll();
+
+            $scope.$parent.onb = {
+                active: true,
+                slide: 1
+            };
+        }
+    }
+});
+
 g.controller("g-study",function($scope, $http, $routeParams, $rootScope, $route){
     $("body").off();
     $scope.listType = "grammar";
@@ -300,11 +325,13 @@ g.controller("g-study",function($scope, $http, $routeParams, $rootScope, $route)
                         $("#"+position.join("")).removeClass("selected");
                         $("#"+position.join("")).addClass("revealed");
                         gMark();
+                        $scope.onb.slide = 3;
                     }
                     if((e.keyCode === 37 || e.keyCode === 39) && $("#"+position.join("")).hasClass("revealed")){
                         colourise(e.keyCode);
                         next(position);
                         gReveal();
+                        $scope.onb.slide = 4;
                     }
                 });
                 function gMark(){
@@ -320,16 +347,19 @@ g.controller("g-study",function($scope, $http, $routeParams, $rootScope, $route)
                     $("#"+position.join("")).removeClass("selected");
                     $("#"+position.join("")).addClass("revealed");
                     gMark();
+                    $scope.onb.slide = 3;
                 };
                 $scope.mRight = function(){
                     colourise(39);
                     gReveal();
                     next(position);
+                    $scope.onb.slide = 4;
                 };
                 $scope.mWrong = function(){
                     colourise(37);
                     gReveal();
                     next(position);
+                    $scope.onb.slide = 4;
                 };
             };
             $scope.save = function(){
@@ -468,16 +498,19 @@ g.controller("g-study-vocab", function($scope, $http, $rootScope, $routeParams, 
                     $("#"+position).removeClass("selected");
                     $("#"+position).addClass("revealed");
                     gMark();
+                    $scope.onb.slide = 3;
                 };
                 $scope.mRight = function(){
                     colourise(39);
                     gReveal();
                     next();
+                    $scope.onb.slide = 4;
                 };
                 $scope.mWrong = function(){
                     colourise(37);
                     gReveal();
                     next();
+                    $scope.onb.slide = 4;
                 };
 
                 $("body").on("keyup", function(e){
@@ -485,11 +518,13 @@ g.controller("g-study-vocab", function($scope, $http, $rootScope, $routeParams, 
                         $("#"+position).removeClass("selected");
                         $("#"+position).addClass("revealed");
                         gMark();
+                        $scope.onb.slide = 3;
                     }
                     if((e.keyCode === 37 || e.keyCode === 39) && $("#"+position).hasClass("revealed")){
                         colourise(e.keyCode);
                         next();
                         gReveal();
+                        $scope.onb.slide = 4;
                     }
                 });
 

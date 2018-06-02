@@ -7,6 +7,21 @@
     </ul>
 </nav>
 
+<div class="g-overlay" ng-controller="g-study-onboarding" ng-class="{'is-active': onboard}">
+    <p class="title is-2">Is this your first time?</p>
+    <p class="subtitle is-4">Take this quick tutorial to find out how to use Grammarer!</p>
+
+    <button class="button is-primary is-large" ng-click="begin()">Begin!</button>
+    <button class="button is-large" ng-click="onboard = false">Cancel</button>
+</div>
+
+<div class="g-overlay" ng-class="{'is-active': onb.slide===4&&onb.active}">
+    <p class="title is-2">That's it!</p>
+    <p class="subtitle is-4">That's how you use Grammarer. At the end, you get an overview of your results. Remember to press the <strong>Save</strong> button!</p>
+
+    <button class="button is-primary is-large" ng-click="onb.active = false; onb.slide = 0;">Dismiss</button>
+</div>
+
 <div class="box" id="g-action-box">
     <div class="field is-grouped" style="width: 100%; overflow-x: auto; overflow-y: hidden; align-items: center;">
         <div class="control">
@@ -58,17 +73,34 @@
 
     </div>
     <div class="has-text-centered" id="g-maybe-bar">
-        <button class="button is-primary is-medium" ng-click="begin()" ng-hide="learning" style="margin-top:10px;" id="g-go">Go! [space]</button>
+        <div class="g-onboarding-relative">
+            <button class="button is-primary is-medium" ng-click="begin(); onb.slide = 2;" ng-hide="learning" style="margin-top:10px;" id="g-go">Go! [space]</button>
+            <div class="g-onboarding-mod" ng-if="onb.active&&onb.slide===1">
+                <p class="subtitle is-3">Press the Go button to begin</p>
+                <p>You can also press the 'space' key on your keyboard.</p>
+            </div>
+        </div>
         <div class="field has-addons" ng-hide="learning==false" style="justify-content: center; margin-top:10px;" id="m-controlbox">
-            <p class="control">
-                <button class="button is-danger g-mark" ng-click="mWrong()">Wrong [←]</button>
-            </p>
-            <p class="control">
-                <button class="button is-primary g-reveal" ng-click="mReveal()">Reveal [space]</button>
-            </p>
-            <p class="control">
-                <button class="button is-success g-mark" ng-click="mRight()">Right [→]</button>
-            </p>
+            <div class="control">
+                <button class="button is-danger g-mark" ng-click="mWrong();">Wrong [←]</button>
+            </div>
+            <div class="control">
+                <div class="g-onboarding-relative">
+                    <button class="button is-primary g-reveal" ng-click="mReveal();">Reveal [space]</button>
+                    <div class="g-onboarding-mod" ng-if="onb.active&&onb.slide===2" style="left: -87%;">
+                        <p class="subtitle is-3">Guess the field highlighted by the blue block in the table</p>
+                        <p>Once you've done it, press the Reveal button or hit the 'space' key on your keyboard.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="control">
+                <div class="g-onboarding-relative">
+                    <button class="button is-success g-mark" ng-click="mRight();">Right [→]</button>
+                    <div class="g-onboarding-mod" ng-if="onb.active&&onb.slide===3" style="left: -220%;">
+                        <p class="subtitle is-3">Mark your answer right or wrong</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
