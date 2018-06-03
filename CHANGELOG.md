@@ -1,0 +1,2 @@
+# Grammarer changelog
+This file contains all changes that are made to the Grammarer source code between releases. The list is separated into 'Features' and 'Bug fixes'. There may be a 'Notes' section at the bottom, too.
