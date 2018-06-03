@@ -592,6 +592,7 @@ g.controller("g-admin", function($scope,$http,$location,$route,$rootScope){
             $scope.adminRole = data.adminRole;
             if(!data.admin){
                 $location.path("/lists");
+                alert("Unauthorised. Press OK to return, or close this alert.");
             }else{
                 $http.get("/d/admincodes")
                     .then(codes=>{
@@ -716,9 +717,17 @@ g.controller("g-admin", function($scope,$http,$location,$route,$rootScope){
                             doc.text($rootScope.config.rootUrl, xCord + 2, yCord + 23);
 
                             if(x===2&&i===8){
+                                let today = new Date();
+                                let dd = today.getDate();
+                                let mm = today.getMonth()+1;
+                                let yyyy = today.getFullYear();
+                                if(dd<10) dd = '0'+dd;
+                                if(mm<10) mm = '0'+mm;
+                                today = dd + '/' + mm + '/' + yyyy;
+
                                 doc.setFontSize(10);
                                 doc.setTextColor(0, 0, 0);
-                                doc.text("Grammarer access codes x16 | Deploy "+$scope.pdfDeploy+" | All codes registered automatically", 20, 280);
+                                doc.text("Grammarer access codes x16 | Deploy '"+$scope.pdfDeploy+"' | Generated "+today, 20, 280);
                                 window.setTimeout(function(){
                                     doc.save("a4.pdf");
                                     button.removeClass("is-loading");

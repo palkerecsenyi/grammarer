@@ -210,6 +210,7 @@
         <hr/>
 
         <p class="subtitle is-4">Auto-generate PDF</p>
+        <p style="margin-bottom: 10px;">This will generate a sheet of 16 cut-out code cards, on one A4 sheet of paper. All codes will be added to your current cohort <code>{{cohort}}</code> automatically.<br/>Each card will feature the page URL, the cohort and the code. The date and deploy will be written at the bottom of the page.</p>
         <input type="text" ng-model="pdfDeploy" placeholder="Deploy..." class="input is-medium" style="margin-bottom: 10px;">
         <button class="button is-medium is-primary" ng-click="pdf($event)">Sheet of 16 codes</button>
     </div>
