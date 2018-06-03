@@ -1056,8 +1056,19 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
             });
     };
 
-    $scope.listEdit = function($event, id){
-        $scope.modal
+    $scope.viewSource = function(id, json){
+        $http.get("/d/listdata?list="+id)
+            .then(function(data){
+                data = data.data;
+
+                if(json){
+                    console.log(data);
+                }else{
+                    console.log(JSON.stringify(data));
+                }
+
+                alert("See console (F12/CTRL+Shift+I) for output.");
+            });
     };
 
 });

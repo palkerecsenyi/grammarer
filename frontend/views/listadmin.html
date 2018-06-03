@@ -27,6 +27,7 @@
 
                 <th>Delete</th>
                 <!--<th>Edit</th>-->
+                <th>View source code</th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +38,12 @@
                 <td>{{list.type}}</td>
                 <td><button class="button is-danger" ng-click="listDelete($event, list.identifier)">Delete</button></td>
                 <!--<td><button class="button is-primary" ng-click="listEdit($event, list.identifier)">Edit</button></td>-->
+
+                <td>
+                    <button class="button is-primary" ng-click="viewSource(list.identifier, true)">JSON</button>
+                    <button class="button is-primary" ng-click="viewSource(list.identifier, false)">String</button>
+                    <a class="button is-primary" href="/d/listdata?list={{list.identifier}}" target="_blank">New tab</a>
+                </td>
             </tr>
         </tbody>
     </table>
