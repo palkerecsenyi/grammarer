@@ -14,7 +14,8 @@
 
 <hr/>
 
-<button class="button is-medium is-primary" style="margin-bottom:10px;" ng-click="listInsert()">Add grammar list</button>
+<button class="button is-medium is-primary" style="margin-bottom:10px;" ng-click="listInsert('grammar')">Add grammar list</button>
+<button class="button is-medium is-primary" style="margin-bottom: 10px;" ng-click="listInsert('vocab')">Add vocab list</button>
 
 <div class="g-table-container">
     <table class="table" style="width: 100%;">
@@ -53,48 +54,69 @@
     <div class="modal-background" ng-click="modal.show = false"></div>
     <div class="modal-card" style="width: unset;">
         <header class="modal-card-head">
-            <p class="modal-card-title">Add new grammar list</p>
+            <p class="modal-card-title">Add new {{modal.type}} list</p>
             <button class="delete" aria-label="close" ng-click="modal.show = false"></button>
         </header>
         <section class="modal-card-body">
 
             <div class="g-table-container" ng-if="modal.slide === 1">
                 <table id="table" class="g-table-editor">
-                            <thead>
-                            <tr class="g-row g-head g-fixed">
-                                <th ng-repeat="column in modal.table.head track by $index" ng-click="listDblclick($event)" ng-class="{'g-selected-container':column.editing}" class="g-cell">
-                                    <div ng-if="!column.editing">{{column.name}}</div>
-                                    <div ng-if="column.editing">
-                                        <input type="text" ng-model="column.name" class="g-selected" ng-keypress="listEnter($event, column)">
-                                    </div>
-                                    <div ng-if="$index!==0">
-                                        <a href ng-click="delC($event)">Delete</a>
-                                    </div>
-                                </th>
-                                <th>
-                                    <button class="button is-primary" ng-click="addC($event)">+ Column</button>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="row in modal.table.rows track by $index" class="g-row g-fluid">
-                                <th class="g-cell g-first" ng-click="listDblclick($event)" ng-class="{'g-selected-container':row.first.editing}">
-                                    <div ng-if="!row.first.editing" class="g-row-filler">{{row.first.name}}</div>
-                                    <div ng-if="row.first.editing" class="g-row-filler">
-                                        <input type="text" ng-model="row.first.name" class="g-selected" ng-keypress="listEnter($event, row.first)">
-                                    </div>
-                                    <div>
-                                        <a href ng-click="delR($event)">Delete</a>
-                                    </div>
-                                </th>
-                                <td ng-repeat="cell in row.cells track by $index" class="g-content g-cell" ng-click="listDblclick($event)" ng-class="{'g-selected-container':cell.editing}">
-                                    <div ng-if="!cell.editing" class="g-row-filler">{{cell.name}}</div>
-                                    <div ng-if="cell.editing" class="g-row-filler">
-                                        <input type="text" ng-model="cell.name" class="g-selected" ng-keypress="listEnter($event, cell)">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
+                    <thead>
+                        <tr class="g-row g-head g-fixed" ng-if="modal.type==='grammar'">
+                            <th ng-repeat="column in modal.table.head track by $index" ng-click="listDblclick($event)" ng-class="{'g-selected-container':column.editing}" class="g-cell" ng-if="modal.type==='grammar'">
+                                <div ng-if="!column.editing">{{column.name}}</div>
+                                <div ng-if="column.editing">
+                                    <input type="text" ng-model="column.name" class="g-selected" ng-keypress="listEnter($event, column)">
+                                </div>
+                                <div ng-if="$index!==0">
+                                    <a href ng-click="delC($event)">Delete</a>
+                                </div>
+                            </th>
+                            <th ng-if="modal.type==='grammar'">
+                                <button class="button is-primary" ng-click="addC($event)">+ Column</button>
+                            </th>
+                        </tr>
+                        <tr class="g-head" ng-if="modal.type==='vocab'">
+                            <th>Original</th>
+                            <th>English</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in modal.table.rows track by $index" class="g-row g-fluid" ng-if="modal.type==='grammar'">
+                            <th class="g-cell g-first" ng-click="listDblclick($event)" ng-class="{'g-selected-container':row.first.editing}">
+                                <div ng-if="!row.first.editing" class="g-row-filler">{{row.first.name}}</div>
+                                <div ng-if="row.first.editing" class="g-row-filler">
+                                    <input type="text" ng-model="row.first.name" class="g-selected" ng-keypress="listEnter($event, row.first)">
+                                </div>
+                                <div>
+                                    <a href ng-click="delR($event)">Delete</a>
+                                </div>
+                            </th>
+                            <td ng-repeat="cell in row.cells track by $index" class="g-content g-cell" ng-click="listDblclick($event)" ng-class="{'g-selected-container':cell.editing}">
+                                <div ng-if="!cell.editing" class="g-row-filler">{{cell.name}}</div>
+                                <div ng-if="cell.editing" class="g-row-filler">
+                                    <input type="text" ng-model="cell.name" class="g-selected" ng-keypress="listEnter($event, cell)">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="row in modal.list track by $index" class="g-row g-fluid" ng-if="modal.type==='vocab'">
+                            <td class="g-content g-cell" ng-click="listDblclick($event)" ng-class="{'g-selected-container':row.original.editing}">
+                                <div ng-if="!row.original.editing" class="g-row-filler">{{row.original.name}}</div>
+                                <div ng-if="row.original.editing" class="g-row-filler">
+                                    <input type="text" ng-model="row.original.name" class="g-selected" ng-keypress="listEnter($event, row.original)">
+                                </div>
+                                <div>
+                                    <a href ng-click="delR($event)" style="font-weight: unset; font-size: 1rem;">Delete</a>
+                                </div>
+                            </td>
+                            <td class="g-content g-cell" ng-click="listDblclick($event)" ng-class="{'g-selected-container':row.english.editing}">
+                                <div ng-if="!row.english.editing" class="g-row-filler">{{row.english.name}}</div>
+                                <div ng-if="row.english.editing" class="g-row-filler">
+                                    <input type="text" ng-model="row.english.name" class="g-selected" ng-keypress="listEnter($event, row.english)">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td><button class="button is-primary" ng-click="addR()">+ Row</button></td>
                         </tr>
                     </tbody>
@@ -104,8 +126,14 @@
             <div ng-if="modal.slide === 2">
                 <p class="subtitle is-4">Information</p>
 
-                <label for="g-i-name">Give your list a descriptive name</label>
-                <input id="g-i-name" ng-model="modal.setup.name" class="input" style="margin-bottom: 15px;">
+                <div ng-if="modal.type==='grammar'">
+                    <label for="g-i-name">Give your list a descriptive name</label>
+                    <input id="g-i-name" ng-model="modal.setup.name" class="input" style="margin-bottom: 15px;" type="text">
+                </div>
+                <div ng-if="modal.type==='vocab'">
+                    <label for="g-i-chck">Enter the checklist number represented by your vocab list</label>
+                    <input id="g-i-chck" ng-model="modal.setup.chck" class="input" style="margin-bottom: 15px;" type="number">
+                </div>
 
                 <label for="g-i-language">Select the language it belongs to</label>
                 <br/>
@@ -118,14 +146,17 @@
                 <label for="g-i-id">Give it a machine-readable (not shown to users) identifier code</label>
                 <input id="g-i-id" ng-model="modal.setup.identifier" class="input" style="margin-bottom: 15px;">
 
-                <label for="g-i-dir">What direction should the list go in?</label>
-                <br/>
-                <div class="select" style="margin-bottom: 15px;">
-                    <select id="g-i-dir" ng-model="modal.setup.direction">
-                        <option value="left">Left</option>
-                        <option value="down" selected>Down</option>
-                    </select>
+                <div ng-if="modal.type==='grammar'">
+                    <label for="g-i-dir">What direction should the list go in?</label>
+                    <br/>
+                    <div class="select" style="margin-bottom: 15px;">
+                        <select id="g-i-dir" ng-model="modal.setup.direction">
+                            <option value="left">Left</option>
+                            <option value="down" selected>Down</option>
+                        </select>
+                    </div>
                 </div>
+
 
                 <hr/>
 
@@ -134,7 +165,8 @@
                     <div class="column is-one-third">
                         <div class="card">
                             <header class="card-header">
-                                <p class="card-header-title">{{ modal.setup.language[0].toUpperCase() + modal.setup.language.substring(1) }} | {{ modal.setup.name }}</p>
+                                <p class="card-header-title" ng-if="modal.type==='grammar'">{{ modal.setup.language[0].toUpperCase() + modal.setup.language.substring(1) }} | {{ modal.setup.name }}</p>
+                                <p class="card-header-title" ng-if="modal.type==='vocab'">{{ modal.setup.language[0].toUpperCase() + modal.setup.language.substring(1) }} | Checklist {{ modal.setup.chck}}</p>
                             </header>
                             <div class="card-content">
                                 <div class="content">

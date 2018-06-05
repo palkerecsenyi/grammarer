@@ -826,36 +826,7 @@ g.controller("g-admin", function($scope,$http,$location,$route,$rootScope){
 g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope){
     $scope.modal = {
         show:false,
-        type:"grammar",
-        table:{
-            head:[{name: "", editing: false},{name: "", editing: false},{name: "", editing: false},{name: "", editing: false}],
-            rows:[
-                {
-                    first: {name: "", editing: false},
-                    cells:[
-                        {name: "", editing: false},
-                        {name: "", editing: false},
-                        {name: "", editing: false}
-                    ]
-                },
-                {
-                    first: {name: "", editing: false},
-                    cells:[
-                        {name: "", editing: false},
-                        {name: "", editing: false},
-                        {name: "", editing: false}
-                    ]
-                },
-                {
-                    first: {name: "", editing: false},
-                    cells:[
-                        {name: "", editing: false},
-                        {name: "", editing: false},
-                        {name: "", editing: false}
-                    ]
-                }
-            ]
-        },
+        type:"",
         slide: 1,
         setup:{
             name: "",
@@ -885,48 +856,125 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
                 }
             });
     }
-    $scope.listInsert = function(){
+    $scope.listInsert = function(type){
+        if(type==="vocab"){
+            delete $scope.modal.table;
+            $scope.modal.list = [
+                {
+                    original: {name:"", editing:false},
+                    english: {name:"", editing:false}
+                },
+                {
+                    original: {name:"", editing:false},
+                    english: {name:"", editing:false}
+                },
+                {
+                    original: {name:"", editing:false},
+                    english: {name:"", editing:false}
+                },
+                {
+                    original: {name:"", editing:false},
+                    english: {name:"", editing:false}
+                }
+            ];
+        }else{
+            $scope.modal.table = {
+                head:[{name: "", editing: false},{name: "", editing: false},{name: "", editing: false},{name: "", editing: false}],
+                    rows:[
+                    {
+                        first: {name: "", editing: false},
+                        cells:[
+                            {name: "", editing: false},
+                            {name: "", editing: false},
+                            {name: "", editing: false}
+                        ]
+                    },
+                    {
+                        first: {name: "", editing: false},
+                        cells:[
+                            {name: "", editing: false},
+                            {name: "", editing: false},
+                            {name: "", editing: false}
+                        ]
+                    },
+                    {
+                        first: {name: "", editing: false},
+                        cells:[
+                            {name: "", editing: false},
+                            {name: "", editing: false},
+                            {name: "", editing: false}
+                        ]
+                    }
+                ]
+            };
+        }
+        $scope.modal.type = type;
         $scope.modal.show = true;
+        $scope.modal.slide = 1;
     };
     $scope.listDblclick = function(e){
-        // If currently editing
-        if(document.body.classList.contains("g-table-editing")){
-            // Search and remove
-            // Head
-            for(let i in $scope.modal.table.head){
-                $scope.modal.table.head[i].editing = false;
-            }
-            for(let i in $scope.modal.table.rows){
-                // Body firsts
-                $scope.modal.table.rows[i].first.editing = false;
-                // Body cells
-                for(let x in $scope.modal.table.rows[i].cells){
-                    $scope.modal.table.rows[i].cells[x].editing = false;
+        if($scope.modal.type==="grammar"){
+            // If currently editing
+            if(document.body.classList.contains("g-table-editing")){
+                // Search and remove
+                // Head
+                for(let i in $scope.modal.table.head){
+                    $scope.modal.table.head[i].editing = false;
                 }
+                for(let i in $scope.modal.table.rows){
+                    // Body firsts
+                    $scope.modal.table.rows[i].first.editing = false;
+                    // Body cells
+                    for(let x in $scope.modal.table.rows[i].cells){
+                        $scope.modal.table.rows[i].cells[x].editing = false;
+                    }
+                }
+                document.body.classList.remove("g-table-editing");
             }
-            document.body.classList.remove("g-table-editing");
+
+            // Identify element
+            let element = e.currentTarget;
+
+            // Set element identifier from JSON object
+            let reference = $scope.modal.table;
+            if(element.parentNode.classList.contains("g-head")){
+                // Header object
+                reference = reference.head[element.cellIndex];
+            }else if(element.classList.contains("g-first")){
+                // First in body row
+                reference = reference.rows[element.parentNode.rowIndex - 1].first;
+            }else if(element.classList.contains("g-content")){
+                // Regular content
+                reference = reference.rows[element.parentNode.rowIndex - 1].cells[element.cellIndex - 1];
+            }
+
+            // Set reference to editing
+            reference.editing = true;
+            // Add class to body
+            document.body.classList.add("g-table-editing");
+        }else{
+            // If currently editing
+            if(document.body.classList.contains("g-table-editing")){
+                // Search and remove all list rows
+                for(let i in $scope.modal.list){
+                    $scope.modal.list[i].original.editing = false;
+                    $scope.modal.list[i].english.editing = false;
+                }
+                document.body.classList.remove("g-table-editing");
+            }
+
+            let element = e.currentTarget;
+            let reference = $scope.modal.list[element.parentNode.rowIndex - 1];
+            if(element.cellIndex === 0){
+                reference = reference.original;
+            }else{
+                reference = reference.english;
+            }
+
+            reference.editing = true;
+            document.body.classList.add("g-table-editing");
         }
 
-        // Identify element
-        let element = e.currentTarget;
-
-        // Set element identifier from JSON object
-        let reference = $scope.modal.table;
-        if(element.parentNode.classList.contains("g-head")){
-            // Header object
-            reference = reference.head[element.cellIndex];
-        }else if(element.classList.contains("g-first")){
-            // First in body row
-            reference = reference.rows[element.parentNode.rowIndex - 1].first;
-        }else if(element.classList.contains("g-content")){
-            // Regular content
-            reference = reference.rows[element.parentNode.rowIndex - 1].cells[element.cellIndex - 1];
-        }
-
-        // Set reference to editing
-        reference.editing = true;
-        // Add class to body
-        document.body.classList.add("g-table-editing");
     };
 
     $scope.listEnter = function(e, cell){
@@ -959,20 +1007,27 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
     };
 
     $scope.addR = function(){
-        let cells = [];
-        if($scope.modal.table.rows.length + 1 <= 9){
-            for(let i = 0; i < $scope.modal.table.rows[$scope.modal.table.rows.length - 1].cells.length; i++){
-                cells.push({
-                    name: " ",
-                    editing: false
+        if($scope.modal.type === "grammar"){
+            let cells = [];
+            if($scope.modal.table.rows.length + 1 <= 9){
+                for(let i = 0; i < $scope.modal.table.rows[$scope.modal.table.rows.length - 1].cells.length; i++){
+                    cells.push({
+                        name: " ",
+                        editing: false
+                    });
+                }
+                $scope.modal.table.rows.push({
+                    first: {name: "", editing: false},
+                    cells: cells
                 });
+            }else{
+                alert("Row count limit (9) reached.");
             }
-            $scope.modal.table.rows.push({
-                first: {name: "", editing: false},
-                cells: cells
-            });
         }else{
-            alert("Row count limit (9) reached.");
+            $scope.modal.list.push({
+                original: {name: "", editing: false},
+                english: {name:"", editing: false}
+            });
         }
     };
 
@@ -990,57 +1045,80 @@ g.controller("g-admin-lists", function($scope,$http,$location,$route,$rootScope)
 
     $scope.delR = function($event){
         $event.stopPropagation();
-
         let element = $event.currentTarget.parentNode.parentNode.parentNode;
         let rowIndex = element.rowIndex - 1;
 
-        $scope.modal.table.rows.splice(rowIndex, 1);
+        if($scope.modal.type === "grammar"){
+            $scope.modal.table.rows.splice(rowIndex, 1);
+        }else{
+            $scope.modal.list.splice(rowIndex, 1);
+        }
+
     };
 
     $scope.listSave = function($event){
         let btn = $($event.currentTarget);
         btn.addClass("is-loading");
 
-        $scope.modal.generatedTable = {table:{head:[], rows:[]}};
+        if($scope.modal.type === "grammar"){
+            $scope.modal.generatedTable = {table:{head:[], rows:[]}};
 
-        $scope.modal.generatedTable.title = $scope.modal.setup.name;
-        $scope.modal.generatedTable.language = $scope.modal.setup.language[0].toUpperCase() + $scope.modal.setup.language.substring(1);
-        $scope.modal.generatedTable.identifier = $scope.modal.setup.identifier;
-        $scope.modal.generatedTable.type = "grammar";
-        $scope.modal.generatedTable.results = [];
+            $scope.modal.generatedTable.title = $scope.modal.setup.name;
+            $scope.modal.generatedTable.language = $scope.modal.setup.language[0].toUpperCase() + $scope.modal.setup.language.substring(1);
+            $scope.modal.generatedTable.identifier = $scope.modal.setup.identifier;
+            $scope.modal.generatedTable.type = "grammar";
+            $scope.modal.generatedTable.results = [];
 
-        $scope.modal.generatedTable.maxPosition = [0, 0];
-        if($scope.modal.setup.direction === "left"){
-            $scope.modal.generatedTable.maxPosition[0] = $scope.modal.table.rows.length;
-            $scope.modal.generatedTable.maxPosition[1] = $scope.modal.table.head.length - 1;
-        }else{
-            $scope.modal.generatedTable.maxPosition[0] = $scope.modal.table.head.length - 1;
-            $scope.modal.generatedTable.maxPosition[1] = $scope.modal.table.rows.length;
-        }
-
-        for(let i in $scope.modal.table.head){
-            $scope.modal.generatedTable.table.head.push($scope.modal.table.head[i].name);
-        }
-
-        for(let i in $scope.modal.table.rows){
-            $scope.modal.generatedTable.table.rows.push({first: "", cells: []});
-            $scope.modal.generatedTable.table.rows[i].first = $scope.modal.table.rows[i].first.name;
-
-            for(let x in $scope.modal.table.rows[i].cells){
-                $scope.modal.generatedTable.table.rows[i].cells.push({name: "", id: ""});
-                $scope.modal.generatedTable.table.rows[i].cells[x].name = $scope.modal.table.rows[i].cells[x].name;
-
-                $scope.modal.generatedTable.table.rows[i].cells[x].id = [0, 0];
-                if($scope.modal.setup.direction === "left"){
-                    $scope.modal.generatedTable.table.rows[i].cells[x].id[0] = parseInt(i) + 1;
-                    $scope.modal.generatedTable.table.rows[i].cells[x].id[1] = parseInt(x) + 1;
-                }else{
-                    $scope.modal.generatedTable.table.rows[i].cells[x].id[0] = parseInt(x) + 1;
-                    $scope.modal.generatedTable.table.rows[i].cells[x].id[1] = parseInt(i) + 1;
-                }
-
-                $scope.modal.generatedTable.table.rows[i].cells[x].id = $scope.modal.generatedTable.table.rows[i].cells[x].id.join("").toString();
+            $scope.modal.generatedTable.maxPosition = [0, 0];
+            if($scope.modal.setup.direction === "left"){
+                $scope.modal.generatedTable.maxPosition[0] = $scope.modal.table.rows.length;
+                $scope.modal.generatedTable.maxPosition[1] = $scope.modal.table.head.length - 1;
+            }else{
+                $scope.modal.generatedTable.maxPosition[0] = $scope.modal.table.head.length - 1;
+                $scope.modal.generatedTable.maxPosition[1] = $scope.modal.table.rows.length;
             }
+
+            for(let i in $scope.modal.table.head){
+                $scope.modal.generatedTable.table.head.push($scope.modal.table.head[i].name);
+            }
+
+            for(let i in $scope.modal.table.rows){
+                $scope.modal.generatedTable.table.rows.push({first: "", cells: []});
+                $scope.modal.generatedTable.table.rows[i].first = $scope.modal.table.rows[i].first.name;
+
+                for(let x in $scope.modal.table.rows[i].cells){
+                    $scope.modal.generatedTable.table.rows[i].cells.push({name: "", id: ""});
+                    $scope.modal.generatedTable.table.rows[i].cells[x].name = $scope.modal.table.rows[i].cells[x].name;
+
+                    $scope.modal.generatedTable.table.rows[i].cells[x].id = [0, 0];
+                    if($scope.modal.setup.direction === "left"){
+                        $scope.modal.generatedTable.table.rows[i].cells[x].id[0] = parseInt(i) + 1;
+                        $scope.modal.generatedTable.table.rows[i].cells[x].id[1] = parseInt(x) + 1;
+                    }else{
+                        $scope.modal.generatedTable.table.rows[i].cells[x].id[0] = parseInt(x) + 1;
+                        $scope.modal.generatedTable.table.rows[i].cells[x].id[1] = parseInt(i) + 1;
+                    }
+
+                    $scope.modal.generatedTable.table.rows[i].cells[x].id = $scope.modal.generatedTable.table.rows[i].cells[x].id.join("").toString();
+                }
+            }
+        }else{
+            $scope.modal.generatedTable = {list:[]};
+            $scope.modal.generatedTable.number = $scope.modal.setup.chck;
+            $scope.modal.generatedTable.language = $scope.modal.setup.language[0].toUpperCase() + $scope.modal.setup.language.substring(1);
+            $scope.modal.generatedTable.identifier = $scope.modal.setup.identifier;
+            $scope.modal.generatedTable.type = "vocab";
+            $scope.modal.generatedTable.results = [];
+            $scope.modal.generatedTable.vocabLength = $scope.modal.list.length;
+
+            for(let i in $scope.modal.list){
+                $scope.modal.generatedTable.list.push({
+                    original: $scope.modal.list[i].original.name,
+                    english: $scope.modal.list[i].english.name
+                });
+            }
+
+            console.log($scope.modal.generatedTable);
         }
 
         $http.get("/d/adminaddlist?json="+JSON.stringify($scope.modal.generatedTable))
