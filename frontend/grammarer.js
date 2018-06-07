@@ -61,6 +61,7 @@ g.controller("g-global",function($scope, $http, $rootScope, $location){
                 data = data.data;
                 $rootScope.authed = data.authenticated;
                 $rootScope.authcode = data.code;
+                $rootScope.authrole = data.adminRole;
                 if(!data.authenticated){
                     $location.path("/");
                 }

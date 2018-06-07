@@ -108,6 +108,12 @@
 
         <p>The following files are designed to be printed out and used to revise during computer-free study sessions.</p>
 
+        <div class="notification is-warning" ng-if="authrole==='admin'" style="margin-top: 15px;">
+            <strong>Admins (only you can see this):</strong>
+            <br/>
+            Printables cannot be created, modified or deleted using the web interface. You need to change <code>gm-options.json</code> and re-run <code>node setup</code> to change printables. PDF files are located in <code>frontend/pdf</code>.
+        </div>
+
         <div class="columns" style="flex-wrap: wrap;margin-top: 10px;">
             <div class="column is-one-quarter" ng-repeat="pdf in pdfs">
                 <div class="card">
