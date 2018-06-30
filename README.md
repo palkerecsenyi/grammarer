@@ -139,7 +139,7 @@ On top of this, you can also change the HTML files in `frontend/views` or the ma
 # Adding grammar/vocab lists
 All lists are defined in the `lists` collection within the `grammarer-db` database. If this doesn't exist (it isn't created by default), you will need to add it manually. It's easiest to do this through [Mongo Compass](https://www.mongodb.com/products/compass), a desktop MongoDB client. You will also need the MongoDB CLI to insert large JSON objects in their original format.
 
-**Grammar lists can now be added through a simple and friendly GUI by an admin user. Simply sign in and click Magic Dashboard > Create and manage grammar/vocab lists > Add grammar list. This feature is yet to be implemented for vocab lists.**
+**Grammar and vocab lists can now be added through a simple and friendly GUI by an admin user. Simply sign in and click Magic Dashboard > Create and manage grammar/vocab lists > Add grammar list/Add vocab list.**
 
 Grammar and vocab lists have slightly different structures so they are explained separately.
 
